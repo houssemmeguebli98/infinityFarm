@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New Categtrans{% endblock %}
+
+{% block body %}
+    <h1>Create new Categtrans</h1>
+
+    {{ include('categtrans/_form.html.twig') }}
+
+    <a href="{{ path('app_categtrans_index') }}">back to list</a>
+{% endblock %}

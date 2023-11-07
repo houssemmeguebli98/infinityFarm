@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categtrans index{% endblock %}
+
+{% block body %}
+    <h1>Categtrans index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>IdCatTra</th>
+                <th>NomCatTra</th>
+                <th>DescripCatTra</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for categtran in categtrans %}
+            <tr>
+                <td>{{ categtran.idCatTra }}</td>
+                <td>{{ categtran.nomCatTra }}</td>
+                <td>{{ categtran.descripCatTra }}</td>
+                <td>
+                    <a href="{{ path('app_categtrans_show', {'idCatTra': categtran.idCatTra}) }}">show</a>
+                    <a href="{{ path('app_categtrans_edit', {'idCatTra': categtran.idCatTra}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_categtrans_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,30 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Categtrans{% endblock %}
+
+{% block body %}
+    <h1>Categtrans</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>IdCatTra</th>
+                <td>{{ categtran.idCatTra }}</td>
+            </tr>
+            <tr>
+                <th>NomCatTra</th>
+                <td>{{ categtran.nomCatTra }}</td>
+            </tr>
+            <tr>
+                <th>DescripCatTra</th>
+                <td>{{ categtran.descripCatTra }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_categtrans_index') }}">back to list</a>
+
+    <a href="{{ path('app_categtrans_edit', {'idCatTra': categtran.idCatTra}) }}">edit</a>
+
+    {{ include('categtrans/_delete_form.html.twig') }}
+{% endblock %}

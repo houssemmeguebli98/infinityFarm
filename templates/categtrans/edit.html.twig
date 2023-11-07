@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Edit Categtrans{% endblock %}
+
+{% block body %}
+    <h1>Edit Categtrans</h1>
+
+    {{ include('categtrans/_form.html.twig', {'button_label': 'Update'}) }}
+
+    <a href="{{ path('app_categtrans_index') }}">back to list</a>
+
+    {{ include('categtrans/_delete_form.html.twig') }}
+{% endblock %}
