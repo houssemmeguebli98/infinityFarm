@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Materiel{% endblock %}
+
+{% block body %}
+    <h1>Materiel</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idmat</th>
+                <td>{{ materiel.idmat }}</td>
+            </tr>
+            <tr>
+                <th>Nommat</th>
+                <td>{{ materiel.nommat }}</td>
+            </tr>
+            <tr>
+                <th>Etatmat</th>
+                <td>{{ materiel.etatmat }}</td>
+            </tr>
+            <tr>
+                <th>Quantitemat</th>
+                <td>{{ materiel.quantitemat }}</td>
+            </tr>
+            <tr>
+                <th>Dateajout</th>
+                <td>{{ materiel.dateajout ? materiel.dateajout|date('Y-m-d') : '' }}</td>
+            </tr>
+            <tr>
+                <th>Nomparc</th>
+                <td>{{ materiel.nomparc }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_materiel_index') }}">back to list</a>
+
+    <a href="{{ path('app_materiel_edit', {'idmat': materiel.idmat}) }}">edit</a>
+
+    {{ include('materiel/_delete_form.html.twig') }}
+{% endblock %}
