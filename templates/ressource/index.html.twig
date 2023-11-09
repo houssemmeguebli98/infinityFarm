@@ -1,0 +1,39 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ressource index{% endblock %}
+
+{% block body %}
+    <h1>Ressource index</h1>
+
+    <table class="table">
+        <thead>
+        <tr>
+            <th>Idres</th>
+            <th>Typeres</th>
+            <th>Speciesres</th>
+            <th>Quantiteres</th>
+            <th>actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for ressource in ressources %}
+            <tr>
+                <td>{{ ressource.idres }}</td>
+                <td>{{ ressource.typeres }}</td>
+                <td>{{ ressource.speciesres }}</td>
+                <td>{{ ressource.quantiteres }}</td>
+                <td>
+                    <a href="{{ path('app_ressource_show', {'idres': ressource.idres}) }}">show</a>
+                    <a href="{{ path('app_ressource_edit', {'idres': ressource.idres}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="5">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_ressource_new') }}">Create new</a>
+{% endblock %}

@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Activite{% endblock %}
+
+{% block body %}
+    <h1>Activite</h1>
+
+    <table class="table">
+        <tbody>
+            <tr>
+                <th>Idact</th>
+                <td>{{ activite.idact }}</td>
+            </tr>
+            <tr>
+                <th>Objetact</th>
+                <td>{{ activite.objetact }}</td>
+            </tr>
+            <tr>
+                <th>Descriptionact</th>
+                <td>{{ activite.descriptionact }}</td>
+            </tr>
+            <tr>
+                <th>Distact</th>
+                <td>{{ activite.distact }}</td>
+            </tr>
+            <tr>
+                <th>Emaildist</th>
+                <td>{{ activite.emaildist }}</td>
+            </tr>
+            <tr>
+                <th>Speciesres</th>
+                <td>{{ activite.speciesres }}</td>
+            </tr>
+            <tr>
+                <th>Etatact</th>
+                <td>{{ activite.etatact }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_activite_index') }}">back to list</a>
+
+    <a href="{{ path('app_activite_edit', {'idact': activite.idact}) }}">edit</a>
+
+    {{ include('activite/_delete_form.html.twig') }}
+{% endblock %}
