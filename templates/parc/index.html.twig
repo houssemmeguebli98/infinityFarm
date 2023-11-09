@@ -1,39 +1,48 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Parc index{% endblock %}
-
-{% block body %}
-    <h1>Parc index</h1>
-
-    <table class="table">
-        <thead>
-            <tr>
-                <th>Idparc</th>
-                <th>Nomparc</th>
-                <th>Adresseparc</th>
-                <th>Superficieparc</th>
-                <th>actions</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for parc in parcs %}
-            <tr>
-                <td>{{ parc.idparc }}</td>
-                <td>{{ parc.nomparc }}</td>
-                <td>{{ parc.adresseparc }}</td>
-                <td>{{ parc.superficieparc }}</td>
-                <td>
-                    <a href="{{ path('app_parc_show', {'idparc': parc.idparc}) }}">show</a>
-                    <a href="{{ path('app_parc_edit', {'idparc': parc.idparc}) }}">edit</a>
-                </td>
-            </tr>
-        {% else %}
-            <tr>
-                <td colspan="5">no records found</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-
-    <a href="{{ path('app_parc_new') }}">Create new</a>
+{% block contenu %}
+    <br>
+    <br>
+    <br>
+    <div class="container mt-4">
+        <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des parcs</h1>
+        <br>
+        <div class="table-responsive">
+            <table class="table table-striped">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Nom de parc</th>
+                    <th>Adresse de parc</th>
+                    <th>Superficie de parc</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for parc in parcs %}
+                    <tr>
+                        <td>{{ parc.nomparc }}</td>
+                        <td>{{ parc.adresseparc }}</td>
+                        <td>{{ parc.superficieparc }}</td>
+                        <td>
+                            <a href="{{ path('app_parc_show', {'idparc': parc.idparc}) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
+                            <a href="{{ path('app_parc_edit', {'idparc': parc.idparc}) }}" class="btn btn-warning"><i class="fas fa-edit"></i></a>
+                            <form method="post" action="{{ path('app_parc_delete', {'idparc': parc.idparc}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ parc.idparc) }}">
+                                <button type="submit" class="btn btn-danger"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                {% else %}
+                    <tr>
+                        <td colspan="4">No records found</td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        <br>
+        <div class="text-center">
+            <a href="{{ path('app_parc_new') }}" class="btn btn-success">Create new</a>
+        </div>
+    </div>
 {% endblock %}
