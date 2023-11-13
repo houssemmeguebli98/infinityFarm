@@ -4,15 +4,21 @@ namespace App\Controller;
 
 use App\Entity\Materiel;
 use App\Form\MaterielType;
+use App\Repository\MaterielRepository;
+use App\Repository\ParcRepository;
+use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 
+
 #[Route('/materiel')]
 class MaterielController extends AbstractController
 {
+    private ParcRepository $parcRepository;
+
     #[Route('/', name: 'app_materiel_index', methods: ['GET'])]
     public function index(EntityManagerInterface $entityManager): Response
     {
@@ -25,28 +31,39 @@ class MaterielController extends AbstractController
         ]);
     }
 
-    #[Route('/new', name: 'app_materiel_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, EntityManagerInterface $entityManager): Response
+    #[Route('/new/{nomParc}/{idParc}', name: 'app_materiel_new', methods: ['GET', 'POST'])]
+    public function new(Request $request, ParcRepository $parcRepository, $idParc, $nomParc): Response
     {
+
+        $parc = $parcRepository->find($idParc);
+
         $materiel = new Materiel();
+        $materiel->setIdParc($parc);
+        // Définir les valeurs automatiques
+        $materiel->setNomParc($nomParc);
+        $materiel->setDateAjout(new \DateTime()); // Date actuelle
+
         $form = $this->createForm(MaterielType::class, $materiel);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+
+            $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($materiel);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_materiel_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_parc_index');
         }
 
-        return $this->renderForm('materiel/new.html.twig', [
-            'materiel' => $materiel,
-            'form' => $form,
+        return $this->render('materiel/new.html.twig', [
+            'form' => $form->createView(),
         ]);
     }
 
+
+
     #[Route('/{idmat}', name: 'app_materiel_show', methods: ['GET'])]
-    public function show(Materiel $materiel): Response
+    public function show(Materiel $materiel,EntityManagerInterface $entityManager): Response
     {
         return $this->render('materiel/show.html.twig', [
             'materiel' => $materiel,
@@ -81,4 +98,21 @@ class MaterielController extends AbstractController
 
         return $this->redirectToRoute('app_materiel_index', [], Response::HTTP_SEE_OTHER);
     }
+
+    #[Route('/materiels-par-parc/{nomparc}', name: 'materiels_par_parc')]
+    public function materielsParParc(string $nomparc, MaterielRepository $materielRepository): Response
+    {
+        // Utilisez la méthode du repository pour récupérer les matériels par nom de parc
+        $materiels = $materielRepository->findMaterielsByNomParc($nomparc);
+
+        // Envoyez les résultats à la vue (template)
+        return $this->render('parc/afficherMateriel.html.twig', [
+            'materiels' => $materiels,
+        ]);
+    }
+
+
+
+
+
 }

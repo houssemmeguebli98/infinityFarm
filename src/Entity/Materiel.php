@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Table;
 
 
-#[ORM\Table(name: 'materiel', indexes: [new ORM\Index(name: 'idParc', columns: ['idParc'])])]
+#[ORM\Table(name: 'materiel', indexes: [new ORM\Index(name: 'idparc', columns: ['idparc'])])]
 #[Entity]
 class Materiel
 {
@@ -33,10 +33,10 @@ class Materiel
     #[Column(name: "dateAjout", type: "date", nullable: false)]
     private \DateTimeInterface $dateajout;
 
-    #[Column(name: "nomParc", type: "string", length: 255, nullable: false)]
+    #[Column(name: "nomparc", type: "string", length: 255, nullable: false)]
     private string $nomparc;
     #[ManyToOne(targetEntity: Parc::class)]
-    #[JoinColumn(name: "idParc", referencedColumnName: "idParc")]
+    #[JoinColumn(name: "idparc", referencedColumnName: "idparc")]
     private Parc $idparc;
 
     /**

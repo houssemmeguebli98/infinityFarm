@@ -4,6 +4,8 @@ namespace App\Controller;
 
 use App\Entity\Parc;
 use App\Form\ParcType;
+use App\Repository\MaterielRepository;
+use App\Repository\ParcRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -81,5 +83,23 @@ class ParcController extends AbstractController
 
         return $this->redirectToRoute('app_parc_index', [], Response::HTTP_SEE_OTHER);
     }
+    private function getParcNames(EntityManagerInterface $entityManager): array
+    {
+        $parcs = $entityManager
+            ->getRepository(Parc::class)
+            ->findAll();
+
+        $parcNames = [];
+
+        foreach ($parcs as $parc) {
+            $parcNames[] = $parc->getNomParc();
+        }
+
+        return $parcNames;
+    }
+
+
+
+
 
 }

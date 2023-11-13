@@ -12,9 +12,9 @@ class ParcType extends AbstractType
     public function buildForm(FormBuilderInterface $builder, array $options): void
     {
         $builder
-            ->add('nomparc')
-            ->add('adresseparc')
-            ->add('superficieparc')
+            ->add('nomParc')
+            ->add('adresseParc')
+            ->add('superficieParc')
         ;
     }
 

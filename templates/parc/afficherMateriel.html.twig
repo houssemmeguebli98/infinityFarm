@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Matériel associé {% endblock %}
+
+{% block contenu %}
+    <br>
+    <br>
+    <div class="container mt-4">
+        <h1 class="text-center mb-4" style="font-size: 24px;">Matériel associé </h1>
+        <br>
+
+        {% if materiels is not empty %}
+            <table class="table table-bordered">
+                <thead class="thead-dark">
+                <tr>
+                    <th>Nommat</th>
+                    <th>Etatmat</th>
+                    <th>Quantitemat</th>
+                    <th>Dateajout</th>
+                    <!-- Ajoutez d'autres colonnes si nécessaire -->
+                </tr>
+                </thead>
+                <tbody>
+                {% for item in materiels %}
+                    <tr>
+                        <td>{{ item.nommat }}</td>
+                        <td>{{ item.etatmat }}</td>
+                        <td>{{ item.quantitemat }}</td>
+                        <td>{{ item.dateajout ? item.dateajout|date('Y-m-d') : '' }}</td>
+                        <!-- Ajoutez d'autres colonnes si nécessaire -->
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <div class="alert alert-danger text-center" role="alert">
+                <strong>Aucun matériel associé trouvé</strong>
+            </div>
+        {% endif %}
+
+        <br>
+        <div class="text-center mt-4">
+            <a href="{{ path('app_parc_index') }}" class="btn btn-primary">
+                <i class="fas fa-arrow-left"></i> Retour à la liste des parcs
+            </a>
+        </div>
+    </div>
+{% endblock %}

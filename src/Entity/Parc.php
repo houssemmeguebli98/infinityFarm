@@ -13,11 +13,11 @@ use Doctrine\ORM\Mapping\Table;
 class Parc
 {
     #[Id]
-    #[Column(name: "idParc", type: "integer", nullable: false)]
+    #[Column(name: "idparc", type: "integer", nullable: false)]
     #[GeneratedValue(strategy: "IDENTITY")]
     private int $idparc;
 
-    #[Column(name: "nomParc", type: "string", length: 255, nullable: false)]
+    #[Column(name: "nomparc", type: "string", length: 255, nullable: false)]
     private string $nomparc;
 
     #[Column(name: "adresseParc", type: "string", length: 255, nullable: false)]
@@ -94,5 +94,5 @@ class Parc
     }
 
 
-    
+
 }
