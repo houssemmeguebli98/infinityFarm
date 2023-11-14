@@ -4,36 +4,22 @@ namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Categtrans
- *
- * @ORM\Table(name="categtrans")
- * @ORM\Entity
- */
+
+#[ORM\Entity]
 class Categtrans
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_cat_tra", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
+    #[ORM\Column]
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
     private $idCatTra;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="nom_cat_tra", type="string", length=255, nullable=false)
-     */
-    private $nomCatTra;
+    #[ORM\Column(length: 150)]
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="descrip_cat_tra", type="string", length=255, nullable=false)
-     */
-    private $descripCatTra;
+    private ?string $nomCatTra = null;
+
+    #[ORM\Column(length: 250)]
+    private ?string $descripCatTra = null;
+    
 
     public function getIdCatTra(): ?int
     {

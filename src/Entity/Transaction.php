@@ -1,54 +1,30 @@
 <?php
 
 namespace App\Entity;
-
+#use App\Repository\TransactionRespository;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
 
-/**
- * Transaction
- *
- * @ORM\Table(name="transaction")
- * @ORM\Entity
- */
+#[ORM\Entity]
+ 
 class Transaction
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id_tra", type="integer", nullable=false)
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
-     */
-    private $idTra;
+     #[ORM\Column]
+     #[ORM\Id]
+     #[ORM\GeneratedValue]
+    private ?int $idTra = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="categ_tra", type="string", length=255, nullable=false)
-     */
-    private $categTra;
+    #[ORM\Column(length: 150)]
+    private ?string $categTra = null;
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="type_tra", type="string", length=255, nullable=false)
-     */
-    private $typeTra;
+    #[ORM\Column(length: 150)]
+    private ?string $typeTra = null;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="date_tra", type="date", nullable=false)
-     */
-    private $dateTra;
+    #[ORM\Column]
+    private ?\DateTime $dateTra = null;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="montant", type="integer", nullable=false)
-     */
-    private $montant;
+    #[ORM\Column]
+    private ?int $montant = null;
 
     public function getIdTra(): ?int
     {

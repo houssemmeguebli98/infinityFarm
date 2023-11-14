@@ -1,0 +1,8 @@
+{% extends 'back.html.twig' %}
+{% block body %}
+    <h1 style="color: white">Ajouter une nouvelle transaction</h1>
+
+    {{ include('backoffice/_form.html.twig') }}
+    <br>
+    <a href="{{ path('app_backtransac_index') }}" style="background-color: #1AA260; color: white; border: none; border-radius: 5px; padding: 10px 15px; text-decoration: none; margin-right: 20px;">Retour</a>
+{% endblock %}
