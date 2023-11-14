@@ -1,22 +1,22 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Activite index{% endblock %}
+{% block title %}Activité index{% endblock %}
 
-{% block body %}
-    <h1>Activite index</h1>
+{% block contenu %}
+    <h1>Activité index</h1>
 
     <table class="table">
         <thead>
-            <tr>
-                <th>Idact</th>
-                <th>Objetact</th>
-                <th>Descriptionact</th>
-                <th>Distact</th>
-                <th>Emaildist</th>
-                <th>Speciesres</th>
-                <th>Etatact</th>
-                <th>actions</th>
-            </tr>
+        <tr>
+            <th>Idact</th>
+            <th>Objet de l'activité</th>
+            <th>Description de l'activité</th>
+            <th>Distance de l'activité</th>
+            <th>Email du distributeur</th>
+            <th>Espèce de ressource</th>
+            <th>État de l'activité</th>
+            <th>Actions</th>
+        </tr>
         </thead>
         <tbody>
         {% for activite in activites %}
@@ -35,11 +35,11 @@
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">no records found</td>
+                <td colspan="8">No activities found</td>
             </tr>
         {% endfor %}
         </tbody>
     </table>
 
-    <a href="{{ path('app_activite_new') }}">Create new</a>
+    <a href="{{ path('app_activite_new') }}">Create new activity</a>
 {% endblock %}
