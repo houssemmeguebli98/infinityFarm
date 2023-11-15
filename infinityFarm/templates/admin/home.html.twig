@@ -1,0 +1,101 @@
+{# templates/users/index.html.twig #}
+
+{% extends 'admin/base.html.twig' %}
+
+{% block content %}
+    <div style="margin: 20px;">
+        <style>
+            /* Add this to your main CSS file or create a new one and include it */
+
+            body {
+                font-family: Arial, sans-serif;
+            }
+
+            h1 {
+                color: #333;
+            }
+
+            table {
+                width: 100%;
+                border-collapse: collapse;
+                margin-top: 20px;
+            }
+
+            th, td {
+                border: 1px solid #ddd;
+                padding: 10px;
+                text-align: left;
+            }
+
+            th {
+                background-color: #f2f2f2;
+            }
+
+            tr:hover {
+                background-color: #f5f5f5;
+            }
+
+            a {
+                text-decoration: none;
+                color: #007bff;
+                margin-right: 10px;
+            }
+
+            a:hover {
+                text-decoration: underline;
+            }
+
+            button {
+                cursor: pointer;
+                padding: 5px 10px;
+                background-color: #dc3545;
+                color: #fff;
+                border: none;
+            }
+
+            button:hover {
+                background-color: #c82333;
+            }
+
+        </style>
+        <h1>Liste des Utilisateurs</h1>
+        <form method="get" action="{{ path('app_users_index') }}">
+            <input type="text" name="search" placeholder="Search by name">
+            <button type="submit">Search</button>
+        </form>
+
+            <table>
+                <thead>
+                <tr>
+                    <th>Nom</th>
+                    <th>Prenom</th>
+                    <th>Email</th>
+                    <th>Role</th>
+                    <th>Sexe</th>
+
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for user in users %}
+                    <tr>
+                        <td>{{ user.nom }}</td>
+                        <td>{{ user.prenom }}</td>
+                        <td>{{ user.mail }}</td>
+                        <td>{{ user.role }}</td>
+                        <td>{{ user.sexe }}</td>
+                        <td>
+                            <a href="{{ path('app_users_show', {'id': user.id}) }}" title="Voir"><i class="fas fa-eye"></i></a>
+                            <a href="{{ path('app_users_edit', {'id': user.id}) }}" title="Modifier"><i class="fas fa-edit"></i></a>
+                            <form method="post" action="{{ path('app_users_delete', {'id': user.id}) }}" style="display: inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ user.id) }}">
+                                <button type="submit" title="Supprimer" onclick="return confirm('Êtes-vous sûr de vouloir supprimer cet utilisateur?')"><i class="fas fa-trash-alt"></i></button>
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+
+            <a href="{{ path('app_users_new') }}" class="btn btn-primary">Ajouter un Utilisateur</a>
+        {% endblock %}

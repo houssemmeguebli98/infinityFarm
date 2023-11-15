@@ -1,0 +1,124 @@
+{% extends 'base.html.twig' %}
+{% block contenu %}
+    <!DOCTYPE html>
+    <html lang="fr">
+    <head>
+
+        <meta charset="UTF-8">
+        <title>Inscription</title>
+
+        <style>
+
+            .form-container {
+                width: 500px;
+                margin: 0 auto;
+
+            }
+
+
+            .form-group {
+                margin-bottom: 10px;
+            }
+
+            label {
+                font-size: 16px;
+                font-weight: bold;
+            }
+
+            input, select {
+                width: 100%;
+                padding: 10px;
+                border: 1px solid #ccc;
+                border-radius: 5px;
+            }
+
+            input[type="checkbox"] {
+                margin-left: 10px;
+            }
+
+            button {
+                width: 100%;
+                background-color: #000;
+                color: #fff;
+                font-size: 16px;
+                font-weight: bold;
+                cursor: pointer;
+            }
+        </style>
+
+
+        <style>
+            body {
+                font-family: Arial, sans-serif;
+                background-color: #f5f5f5;
+                margin: 0;
+                padding: 0;
+            }
+
+            form {
+                width: 500px;
+                margin: 100px auto;
+                background: #fff;
+                padding: 20px;
+                border-radius: 5px;
+                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            }
+
+            label {
+                display: block;
+                margin: 10px 0;
+            }
+
+            input[type="text"],
+            input[type="email"],
+            input[type="password"] {
+                width: calc(100% - 22px);
+                padding: 5px;
+                border: 1px solid #ccc;
+                border-radius: 3px;
+            }
+
+            input[type="submit"] {
+                width: 100%;
+                padding: 10px;
+                margin: 10px 0;
+                background: #4CAF50;
+                color: white;
+                border: none;
+                border-radius: 3px;
+                cursor: pointer;
+            }
+
+            input[type="submit"]:hover {
+                background: #45a049;
+            }
+        </style>
+    </head>
+    <body>
+    <form action="{{ path('app_signup') }}" method="post">
+        <h2>Inscription</h2>
+        <label for="nom">Nom</label>
+        <input type="text" id="nom" name="nom" required>
+
+        <label for="prenom">Prénom</label>
+        <input type="text" id="prenom" name="prenom" required>
+
+        <label for="email">Email</label>
+        <input type="email" id="email" name="email" required>
+
+        <label for="password">Mot de passe</label>
+        <input type="password" id="password" name="password" required>
+
+
+
+        <!-- Ajoutez d'autres champs pour l'inscription si nécessaire -->
+
+        <input type="submit" value="S'inscrire">
+
+        {% for message in app.flashes('error') %}
+            <p style="color: red;">{{ message }}</p>
+        {% endfor %}
+    </form>
+    </body>
+    </html>
+{% endblock %}
