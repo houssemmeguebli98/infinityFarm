@@ -15,7 +15,7 @@ class AdminController extends AbstractController
         $users = $this->getDoctrine()->getRepository(Users::class)->findAll();
         return $this->render('admin/home.html.twig', [
             'controller_name' => 'AdminController',
-            'users' => $users, // Pass the users to the template
+            'users' => $users, 
         ]);
     }
 }
