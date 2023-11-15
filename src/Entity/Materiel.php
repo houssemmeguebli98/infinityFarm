@@ -10,8 +10,11 @@ use Doctrine\ORM\Mapping\ManyToOne;
 use Doctrine\ORM\Mapping\JoinColumns;
 use Doctrine\ORM\Mapping\JoinColumn;
 use Doctrine\ORM\Mapping\Table;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
+#[UniqueEntity('nommat', message: 'Ce nom de matériel est déjà existé')]
 #[ORM\Table(name: 'materiel', indexes: [new ORM\Index(name: 'idparc', columns: ['idparc'])])]
 #[Entity]
 class Materiel
@@ -21,13 +24,25 @@ class Materiel
     #[GeneratedValue(strategy: "IDENTITY")]
     private int $idmat;
 
-    #[Column(name: "nomMat", type: "string", length: 255, nullable: false)]
+    #[Column(name: "nommat", type: "string", length: 255, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le nom du parc doit avoir au moins 3 caractères.',
+        maxMessage: 'Le nom du parc ne peut pas dépasser 50 caractères.',
+    )]
     private string $nommat;
 
     #[Column(name: "etatMat", type: "string", length: 255, nullable: false)]
     private string $etatmat;
 
     #[Column(name: "QuantiteMat", type: "float", precision: 10, scale: 0, nullable: false)]
+    #[Assert\NotBlank]
+    #[Assert\Type(
+        type: 'float',
+        message: 'la quantite doit etre un nombre reel',
+    )]
     private float $quantitemat;
 
     #[Column(name: "dateAjout", type: "date", nullable: false)]

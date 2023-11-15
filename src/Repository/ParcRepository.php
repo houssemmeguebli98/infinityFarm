@@ -2,9 +2,12 @@
 namespace App\Repository;
 
 use App\Entity\Materiel;
+use App\Form\SearchParcType;
 use Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepository;
 use Doctrine\Persistence\ManagerRegistry;
 use App\Entity\Parc;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 
 class ParcRepository extends ServiceEntityRepository
 {
@@ -32,6 +35,7 @@ class ParcRepository extends ServiceEntityRepository
 
     }
 
+
     /**
      * Récupère les matériels associés à un parc avec l'idParc donné.
      *
@@ -51,6 +55,7 @@ class ParcRepository extends ServiceEntityRepository
     }
 
 */
+
 
 
 

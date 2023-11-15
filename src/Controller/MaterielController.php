@@ -32,7 +32,7 @@ class MaterielController extends AbstractController
     }
 
     #[Route('/new/{nomParc}/{idParc}', name: 'app_materiel_new', methods: ['GET', 'POST'])]
-    public function new(Request $request, ParcRepository $parcRepository, $idParc, $nomParc): Response
+    public function new(Request $request, ParcRepository $parcRepository, $idParc, $nomParc, EntityManagerInterface $entityManager): Response
     {
 
         $parc = $parcRepository->find($idParc);
@@ -47,6 +47,12 @@ class MaterielController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $existingMateriel = $entityManager->getRepository(Materiel::class)->findOneBy(['nommat' => $materiel->getNommat()]);
+            if ($existingMateriel) {
+                $this->addFlash('error', 'Ce nom de materiel est déjà utilisé.');
+                return $this->redirectToRoute('app_parc_index');
+            }
+
 
             $entityManager = $this->getDoctrine()->getManager();
             $entityManager->persist($materiel);

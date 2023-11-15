@@ -52,7 +52,9 @@ html {
 article, aside, figcaption, figure, footer, header, hgroup, main, nav, section {
   display: block;
 }
-
+.btn-lg-square.back-to-top {
+  transition-duration: 0.2s;
+}
 body {
   margin: 0;
   font-family: "Poppins", sans-serif;

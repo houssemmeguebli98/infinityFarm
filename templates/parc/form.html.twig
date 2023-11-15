@@ -10,8 +10,16 @@
 
 <div class="mb-3">
     {{ form_row(form.superficieParc, {'attr': {'class': 'form-control'}}) }}
+
 </div>
 
+<span style="color: red; font-size: 15px; margin-top: 5px;">
+    {% for error in form.vars.errors %}
+        *{{ error.message }}{% if not loop.last %}<br>{% endif %}
+    {% endfor %}
+</span>
+<br>
+<br>
 <button type="submit" class="btn btn-primary">Enregistrer</button>
 
 {{ form_end(form) }}

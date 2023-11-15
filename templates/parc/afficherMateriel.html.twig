@@ -17,6 +17,7 @@
                     <th>Etatmat</th>
                     <th>Quantitemat</th>
                     <th>Dateajout</th>
+                    <th>Actions</th>
                     <!-- Ajoutez d'autres colonnes si nécessaire -->
                 </tr>
                 </thead>
@@ -27,7 +28,17 @@
                         <td>{{ item.etatmat }}</td>
                         <td>{{ item.quantitemat }}</td>
                         <td>{{ item.dateajout ? item.dateajout|date('Y-m-d') : '' }}</td>
-                        <!-- Ajoutez d'autres colonnes si nécessaire -->
+                        <td>
+                            <a href="{{ path('app_materiel_edit', {'idmat': item.idmat}) }}" class="btn btn-warning btn-sm">
+                                <i class="fas fa-edit"></i>
+                            </a>
+                            <form method="post" action="{{ path('app_materiel_delete', {'idmat': item.idmat}) }}" onsubmit="return confirm('Are you sure you want to delete this item?');" style="display: inline;">
+                                <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ item.idmat) }}">
+                                <button type="submit" class="btn btn-danger">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </form>
+                        </td>
                     </tr>
                 {% endfor %}
                 </tbody>
