@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'activite')]
 #[ORM\Entity]
@@ -13,23 +14,33 @@ class Activite
     #[ORM\Column(name: 'idAct', type: 'integer', nullable: false)]
     private int $idact;
 
+    #[Assert\Length(min: 5, minMessage: "L'objet de l'activité doit avoir au moins {{ limit }} caractères.")]
     #[ORM\Column(name: 'objetAct', type: 'string', length: 255, nullable: false)]
     private string $objetact;
 
+    #[Assert\Length(min: 10, minMessage: "La description de l'activité doit avoir au moins {{ limit }} caractères.")]
     #[ORM\Column(name: 'descriptionAct', type: 'string', length: 255, nullable: false)]
     private string $descriptionact;
 
+    #[Assert\Regex(
+        pattern: "/^[a-zA-Z]/",
+        message: "Le destinataire doit commencer par une lettre."
+    )]
     #[ORM\Column(name: 'distAct', type: 'string', length: 255, nullable: false)]
     private string $distact;
 
+    #[Assert\Email(message: "Le format de l'email destinataire n'est pas valide.")]
     #[ORM\Column(name: 'emailDist', type: 'string', length: 255, nullable: false)]
     private string $emaildist;
 
-    #[ORM\Column(name: 'speciesRES', type: 'string', length: 255, nullable: false)]
+     #[ORM\Column(name: 'speciesRES', type: 'string', length: 255, nullable: false)]
     private string $speciesres;
 
+    #[Assert\Choice(choices: ['en attente', 'terminé'], message: "L'état de l'activité doit être 'en attente' ou 'terminé'.")]
     #[ORM\Column(name: 'etatAct', type: 'string', length: 255, nullable: false)]
     private string $etatact;
+
+    // Getters and setters...
 
     public function getIdact(): ?int
     {
@@ -107,4 +118,5 @@ class Activite
 
         return $this;
     }
+
 }
