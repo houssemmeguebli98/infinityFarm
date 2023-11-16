@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'users')]
 #[ORM\Entity]
@@ -14,15 +15,30 @@ class Users
     private ?int $id;
 
     #[ORM\Column(name: "nom", type: "string", length: 255, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        match: false,
+        message: 'Le Nom ne doit pas contenir de chiffres.'
+    )]
     private ?string $nom;
 
     #[ORM\Column(name: "prenom", type: "string", length: 255, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/\d/',
+        match: false,
+        message: 'Le Prénom ne doit pas contenir de chiffres.'
+    )]
     private ?string $prenom;
 
     #[ORM\Column(name: "mail", type: "string", length: 255, nullable: true)]
+    #[Assert\Email(message: 'Veuillez entrer un email valide.')]
     private ?string $mail;
 
     #[ORM\Column(name: "numeroTelephone", type: "string", length: 20, nullable: true)]
+    #[Assert\Regex(
+        pattern: '/^\d+$/',
+        message: 'Le numéro de téléphone doit contenir uniquement des chiffres.'
+    )]
     private ?string $numerotelephone;
 
     #[ORM\Column(name: "role", type: "string", length: 255, nullable: true)]
