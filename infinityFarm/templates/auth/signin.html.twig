@@ -64,6 +64,9 @@
         <input type="submit" value="Se connecter">
 
         <a href="{{ path('app_signup') }}" class="signup-button">S'inscrire</a>
+        <div style="position: fixed; top: 20px; right: 20px;">
+            <a href="{{ path('app_signup') }}" style="background-color: green; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">S'inscrire</a>
+        </div>
 
         {% for message in app.flashes('error') %}
             <p style="color: red;">{{ message }}</p>

@@ -1,9 +1,40 @@
 {% extends 'base2.html.twig' %}
 
-{% block title %}Liste Utilisateurs{% endblock %}
+
+
 
 {% block body %}
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+
+
+    <!-- Add a button to collapse navigation items on small screens -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav">
+
+
+        </ul>
+
+        <!-- Add the search form -->
+        <form method="get" action="{{ path('app_admin_index') }}" class="form-inline my-2 my-lg-0 ml-auto">
+            <input class="form-control mr-sm-2" type="text" name="search" placeholder="Rechercher ">
+            <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Rechercher</button>
+        </form>
+
+        <!-- Add the logout button -->
+        <a href="{{ path('app_signin') }}" class="btn btn-danger ml-2">Deconnecter</a>
+    </div>
+</nav>
+
+
+
+
     <h1>Liste Utilisateurs</h1>
+    <a href="{{ path('app_admin_new') }}" class="btn btn-success">Create new</a>
+
 
     <table class="table">
         <thead>
@@ -31,8 +62,21 @@
                 <td>{{ user.ville }}</td>
                 <td>{{ user.sexe }}</td>
                 <td>
-                    <a href="{{ path('app_admin_show', {'id': user.id}) }}">show</a>
-                    <a href="{{ path('app_admin_edit', {'id': user.id}) }}">edit</a>
+
+                    <a href="{{ path('app_admin_show', {'id': user.id}) }}" class="btn btn-link">
+                        <i class="fas fa-eye"></i> Show
+                    </a>
+
+                    <a href="{{ path('app_admin_edit', {'id': user.id}) }}" class="btn btn-link">
+                        <i class="fas fa-pencil-alt"></i> Edit
+                    </a>
+
+                    <a href="{{ path('app_admin_delete', {'id': user.id}) }}" class="btn btn-link" onclick="return confirm('Are you sure?')">
+                        <i class="fas fa-trash-alt"></i> Delete
+                    </a>
+
+
+
                 </td>
             </tr>
         {% else %}
@@ -43,5 +87,4 @@
         </tbody>
     </table>
 
-    <a href="{{ path('app_admin_new') }}">Create new</a>
 {% endblock %}

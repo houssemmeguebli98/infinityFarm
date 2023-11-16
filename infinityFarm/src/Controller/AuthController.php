@@ -9,6 +9,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\Security\Core\Security;
+
 
 class AuthController extends AbstractController
 {
@@ -28,6 +30,12 @@ class AuthController extends AbstractController
         ]);
     }
 
+
+
+
+
+
+
     #[Route('/signin_check', name: 'app_signin_check')]
     public function signinCheck(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -40,8 +48,21 @@ class AuthController extends AbstractController
         if ($user) {
             // Vérification du mot de passe
             if ($user->getMotdepasse() === $password) {
-                $this->addFlash('success', 'Authentification réussie');
-                return $this->redirectToRoute('app_signin');
+                // Redirection en fonction du rôle
+                switch ($user->getRole()) {
+                    case 'ADMIN':
+                        return $this->redirectToRoute('app_admin_index');
+                        break;
+                    case 'AGRICULTEUR':
+                        return $this->redirectToRoute('agri_dashboard');
+                        break;
+                    case 'OUVRIER':
+                        return $this->redirectToRoute('ouvrier_dashboard');
+                        break;
+                    default:
+                        // Redirection par défaut si le rôle n'est pas reconnu
+                        return $this->redirectToRoute('app_signup');
+                }
             } else {
                 $this->addFlash('error', 'Mot de passe incorrect');
                 return $this->redirectToRoute('app_signin');
@@ -51,5 +72,6 @@ class AuthController extends AbstractController
             return $this->redirectToRoute('app_signin');
         }
     }
+
 
 }

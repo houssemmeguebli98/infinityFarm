@@ -12,7 +12,14 @@ public function __construct(ManagerRegistry $registry)
 {
 parent::__construct($registry, Users::class);
 }
-
+    public function findByNom($nom)
+    {
+        return $this->createQueryBuilder('u')
+            ->andWhere('u.nom LIKE :nom')
+            ->setParameter('nom', '%'.$nom.'%')
+            ->getQuery()
+            ->getResult();
+    }
 public function findBySearchTerm($searchTerm)
 {
 return $this->createQueryBuilder('u')

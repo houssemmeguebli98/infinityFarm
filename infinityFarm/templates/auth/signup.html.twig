@@ -121,8 +121,8 @@
         <div class="form-group">
             <label for="role">Role</label>
             <select id="role" name="role" required>
-                <option value="agriculteur">Agriculteur</option>
-                <option value="ouvrier">Ouvrier</option>
+                <option value="agriculteur">AGRICULTEUR</option>
+                <option value="ouvrier">OUVRIER</option>
             </select>
         </div>
 
@@ -146,6 +146,10 @@
         </div>
 
         <input type="submit" value="S'inscrire">
+        <div style="position: fixed; top: 20px; right: 20px;">
+            <a href="{{ path('app_signin') }}" style="background-color: green; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Signin</a>
+        </div>
+
 
         {% for message in app.flashes('error') %}
             <p style="color: red;">{{ message }}</p>

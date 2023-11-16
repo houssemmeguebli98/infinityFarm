@@ -15,9 +15,15 @@ use Symfony\Component\Validator\Validator\ValidatorInterface;
 class AdminController extends AbstractController
 {
     #[Route('/admin', name: 'app_admin_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager): Response
     {
-        $users = $entityManager->getRepository(Users::class)->findAll();
+        $searchTerm = $request->query->get('search');
+
+        if ($searchTerm) {
+            $users = $entityManager->getRepository(Users::class)->findByNom($searchTerm);
+        } else {
+            $users = $entityManager->getRepository(Users::class)->findAll();
+        }
 
         return $this->render('admin/index.html.twig', [
             'users' => $users,

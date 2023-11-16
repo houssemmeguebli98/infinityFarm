@@ -2,11 +2,12 @@
 
 namespace App\Entity;
 
+use App\Repository\UsersRepository;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
 #[ORM\Table(name: 'users')]
-#[ORM\Entity]
+#[ORM\Entity(repositoryClass: UsersRepository::class)]
 class Users
 {
     #[ORM\Id]
