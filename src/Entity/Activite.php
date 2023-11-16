@@ -13,29 +13,29 @@ class Activite
     #[ORM\GeneratedValue(strategy: 'IDENTITY')]
     #[ORM\Column(name: 'idAct', type: 'integer', nullable: false)]
     private int $idact;
-
+    #[Assert\NotBlank(message: "L'activite ne peut pas être vide.")]
     #[Assert\Length(min: 5, minMessage: "L'objet de l'activité doit avoir au moins {{ limit }} caractères.")]
     #[ORM\Column(name: 'objetAct', type: 'string', length: 255, nullable: false)]
     private string $objetact;
-
+    #[Assert\NotBlank(message: "La description ne peut pas être vide.")]
     #[Assert\Length(min: 10, minMessage: "La description de l'activité doit avoir au moins {{ limit }} caractères.")]
     #[ORM\Column(name: 'descriptionAct', type: 'string', length: 255, nullable: false)]
     private string $descriptionact;
-
+    #[Assert\NotBlank(message: "Le distinataire ne peut pas être vide.")]
     #[Assert\Regex(
         pattern: "/^[a-zA-Z]/",
         message: "Le destinataire doit commencer par une lettre."
     )]
     #[ORM\Column(name: 'distAct', type: 'string', length: 255, nullable: false)]
     private string $distact;
-
+    #[Assert\NotBlank(message: "L'email ne peut pas être vide.")]
     #[Assert\Email(message: "Le format de l'email destinataire n'est pas valide.")]
     #[ORM\Column(name: 'emailDist', type: 'string', length: 255, nullable: false)]
     private string $emaildist;
-
+    #[Assert\NotBlank(message: "Le species ne peut pas être vide.")]
      #[ORM\Column(name: 'speciesRES', type: 'string', length: 255, nullable: false)]
     private string $speciesres;
-
+    #[Assert\NotBlank(message: "L'etat ne peut pas être vide.")]
     #[Assert\Choice(choices: ['en attente', 'terminé'], message: "L'état de l'activité doit être 'en attente' ou 'terminé'.")]
     #[ORM\Column(name: 'etatAct', type: 'string', length: 255, nullable: false)]
     private string $etatact;

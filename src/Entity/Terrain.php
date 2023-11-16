@@ -5,10 +5,16 @@ namespace App\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Validator\Constraints\Length;
 
 #[ORM\Table(name: 'terrain')]
 #[ORM\Entity]
+#[UniqueEntity(
+    fields: ['nomterrain'],
+    message: 'Ce nom de terrain est déjà utilisé.'
+)]
 class Terrain
 {
     #[ORM\Id]
@@ -25,9 +31,13 @@ class Terrain
     private string $nomterrain;
 
     #[Assert\NotBlank(message: "La localisation du terrain ne peut pas être vide.")]
+    #[Length(
+        min: 3,
+        minMessage: "La localisation doit contenir au moins 3 caractères."
+    )]
     #[ORM\Column(name: 'localisation', type: 'string', length: 255, nullable: false)]
     private string $localisation;
-
+    #[Assert\NotBlank(message: "La superficie ne peut pas être vide.")]
     #[Assert\GreaterThan(value: 0, message: "La superficie doit être supérieure à 0.")]
     #[ORM\Column(name: 'superficie', type: 'float', precision: 10, scale: 0, nullable: false)]
     private float $superficie;

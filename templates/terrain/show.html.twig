@@ -52,11 +52,11 @@
                             <td>{{ ressource.quantiteres }}</td>
                             <td>
                                 <a href="{{ path('app_terrain_edit_ressource', {'idterrain': terrain.idterrain, 'idres': ressource.idres}) }}" class="btn btn-warning">
-                                    <i class="fas fa-edit"></i> Modifier la ressource
+                                    <i class="fas fa-edit"></i>
                                 </a>
 
                                 <a href="{{ path('app_terrain_delete_ressource', {'idterrain': terrain.idterrain, 'idres': ressource.idres}) }}" class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this resource?');">
-                                    <i class="fas fa-trash"></i> Supprimer la ressource
+                                    <i class="fas fa-trash"></i>
                                 </a>
                             </td>
                         </tr>
