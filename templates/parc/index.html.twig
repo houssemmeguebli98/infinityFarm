@@ -10,12 +10,30 @@
 
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Parcs</h1>
         <br>
-        <form method="get" action="{{ path('find_name_parc') }}" class="mb-4">
-            <div class="input-group">
-                <input type="text" name="nom" id="nom" placeholder="Nom du parc"  style="width: 250px" />
-                <button type="submit" class="btn btn-primary">
-                    <i class="fas fa-search"></i>
-                </button>
+
+        {# Formulaire de recherche #}
+        <form method="get" action="{{ path('app_parc_index') }}" class="mb-4">
+            <div class="d-flex">
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="nomparc" name="nomparc" value="{{ app.request.query.get('nomparc') }}" class="form-control" placeholder="Nom du Parc">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="adresseparc" name="adresseparc" value="{{ app.request.query.get('adresseparc') }}" class="form-control" placeholder="Adresse du Parc">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="superficieparc" name="superficieparc" value="{{ app.request.query.get('superficieparc') }}" class="form-control" placeholder="Superficie du Parc">
+                    </div>
+                </div>
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
             </div>
         </form>
 
@@ -24,9 +42,9 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th class="bg-dark text-white">Nomparc</th>
-                    <th class="bg-dark text-white">Adresseparc</th>
-                    <th class="bg-dark text-white">Superficieparc</th>
+                    <th class="bg-dark text-white">Nom de parc</th>
+                    <th class="bg-dark text-white">Adresse de parc</th>
+                    <th class="bg-dark text-white">Superficie de parc</th>
                     <th class="bg-dark text-white">Actions</th>
                 </tr>
                 </thead>

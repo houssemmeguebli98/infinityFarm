@@ -8,16 +8,54 @@
         <br>
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Matériels</h1>
         <br>
+        {# Formulaire de recherche pour le Materiel #}
+        <form method="get" action="{{ path('app_materiel_index') }}" class="mb-4">
+            <div class="d-flex">
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="nommat" name="nommat" value="{{ app.request.query.get('nommat') }}" class="form-control" placeholder="Nom du Matériel">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="nomparc" name="nomparc" value="{{ app.request.query.get('nomparc') }}" class="form-control" placeholder="Nom du Parc">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="etatmat" name="etatmat" value="{{ app.request.query.get('etatmat') }}" class="form-control" placeholder="État ">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="quantitemat" name="quantitemat" value="{{ app.request.query.get('quantitemat') }}" class="form-control" placeholder="Quantité ">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="dateajout" name="dateajout" value="{{ app.request.query.get('dateajout') }}" class="form-control" placeholder="Date d'ajout ">
+                    </div>
+                </div>
+
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
+
         <div class="table-responsive">
             <!-- Tableau pour afficher les informations du matériel -->
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th class="bg-dark text-white">Nommat</th>
-                    <th class="bg-dark text-white">Etatmat</th>
-                    <th class="bg-dark text-white">Quantitemat</th>
-                    <th class="bg-dark text-white">Dateajout</th>
-                    <th class="bg-dark text-white">Nomparc</th>
+                    <th class="bg-dark text-white">Nom de matériel</th>
+                    <th class="bg-dark text-white">Nom du parc</th>
+
+                    <th class="bg-dark text-white">Etat</th>
+                    <th class="bg-dark text-white">Quantite</th>
+                    <th class="bg-dark text-white">Date d'ajout</th>
                     <th class="bg-dark text-white">Actions</th>
                 </tr>
                 </thead>
@@ -25,10 +63,11 @@
                 {% for materiel in materiels %}
                     <tr>
                         <td>{{ materiel.nommat }}</td>
+                        <td>{{ materiel.nomparc }}</td>
+
                         <td>{{ materiel.etatmat }}</td>
                         <td>{{ materiel.quantitemat }}</td>
                         <td>{{ materiel.dateajout ? materiel.dateajout|date('Y-m-d') : '' }}</td>
-                        <td>{{ materiel.nomparc }}</td>
                         <td>
                             <a href="{{ path('app_materiel_show', {'idmat': materiel.idmat}) }}" class="btn btn-info btn-sm">
                                 <i class="fas fa-eye"></i>

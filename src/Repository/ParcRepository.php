@@ -57,6 +57,27 @@ class ParcRepository extends ServiceEntityRepository
 */
 
 
+    public function searchByCriteria(array $criteria): array
+    {
+        $queryBuilder = $this->createQueryBuilder('p');
+
+        if (!empty($criteria['nomparc'])) {
+            $queryBuilder->andWhere('p.nomparc LIKE :nomparc')
+                ->setParameter('nomparc', '%' . $criteria['nomparc'] . '%');
+        }
+
+        if (!empty($criteria['adresseparc'])) {
+            $queryBuilder->andWhere('p.adresseparc LIKE :adresseparc')
+                ->setParameter('adresseparc', '%' . $criteria['adresseparc'] . '%');
+        }
+
+        if (!empty($criteria['superficieparc'])) {
+            $queryBuilder->andWhere('p.superficieparc = :superficieparc')
+                ->setParameter('superficieparc', $criteria['superficieparc']);
+        }
+
+        return $queryBuilder->getQuery()->getResult();
+    }
 
 
 

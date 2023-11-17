@@ -17,11 +17,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class ParcController extends AbstractController
 {
     #[Route('/', name: 'app_parc_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request,EntityManagerInterface $entityManager, ParcRepository $parcRepository): Response
     {
-        $parcs = $entityManager
-            ->getRepository(Parc::class)
-            ->findAll();
+        $nomparc = $request->query->get('nomparc');
+        $adresseparc = $request->query->get('adresseparc');
+        $superficieparc = $request->query->get('superficieparc');
+
+        $criteria = [
+            'nomparc' => $nomparc,
+            'adresseparc' => $adresseparc,
+            'superficieparc' => $superficieparc,
+        ];
+
+        if (!empty($nomparc) || !empty($adresseparc) || !empty($superficieparc)) {
+            // If at least one search parameter is provided, use the searchByCriteria method.
+            $parcs = $parcRepository->searchByCriteria($criteria);
+        } else {
+            // If no search parameter is provided, retrieve all parcs.
+            $parcs = $parcRepository->findAll();
+        }
 
         return $this->render('parc/index.html.twig', [
             'parcs' => $parcs,

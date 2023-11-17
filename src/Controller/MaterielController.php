@@ -20,11 +20,29 @@ class MaterielController extends AbstractController
     private ParcRepository $parcRepository;
 
     #[Route('/', name: 'app_materiel_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, MaterielRepository $materielRepository): Response
     {
-        $materiels = $entityManager
-            ->getRepository(Materiel::class)
-            ->findAll();
+        $nommat = $request->query->get('nommat');
+        $etatmat = $request->query->get('etatmat');
+        $quantitemat = $request->query->get('quantitemat');
+        $dateajout = $request->query->get('dateajout');
+        $nomparc = $request->query->get('nomparc');
+
+        $criteria = [
+            'nommat' => $nommat,
+            'etatmat' => $etatmat,
+            'quantitemat' => $quantitemat,
+            'dateajout' => $dateajout,
+            'nomparc' => $nomparc,
+        ];
+
+        if (!empty($nommat) || !empty($etatmat) || !empty($quantitemat) || !empty($dateajout) || !empty($nomparc)) {
+            // Si au moins un paramètre de recherche est fourni, utilisez la méthode searchMatByCriteria.
+            $materiels = $materielRepository->searchMatByCriteria($criteria);
+        } else {
+            // Si aucun paramètre de recherche n'est fourni, récupérez tous les matériels.
+            $materiels = $materielRepository->findAll();
+        }
 
         return $this->render('materiel/index.html.twig', [
             'materiels' => $materiels,
@@ -106,18 +124,33 @@ class MaterielController extends AbstractController
     }
 
     #[Route('/materiels-par-parc/{nomparc}', name: 'materiels_par_parc')]
-    public function materielsParParc(string $nomparc, MaterielRepository $materielRepository): Response
+    public function materielsParParc(string $nomparc, Request $request, MaterielRepository $materielRepository): Response
     {
-        // Utilisez la méthode du repository pour récupérer les matériels par nom de parc
-        $materiels = $materielRepository->findMaterielsByNomParc($nomparc);
+        $nommat = $request->query->get('nommat');
+        $etatmat = $request->query->get('etatmat');
+        $quantitemat = $request->query->get('quantitemat');
+        $dateajout = $request->query->get('dateajout');
 
-        // Envoyez les résultats à la vue (template)
+        $criteria = [
+            'nommat' => $nommat,
+            'etatmat' => $etatmat,
+            'quantitemat' => $quantitemat,
+            'dateajout' => $dateajout,
+            'nomparc' => $nomparc,
+        ];
+
+        if (!empty($nommat) || !empty($etatmat) || !empty($quantitemat) || !empty($dateajout) || !empty($nomparc)) {
+            // Si au moins un paramètre de recherche est fourni, utilisez la méthode searchMatByCriteria.
+            $materiels = $materielRepository->searchMatByCriteria($criteria);
+        } else {
+            // Si aucun paramètre de recherche n'est fourni, récupérez tous les matériels.
+            $materiels = $materielRepository->findAll();
+        }
+
         return $this->render('parc/afficherMateriel.html.twig', [
             'materiels' => $materiels,
         ]);
     }
-
-
 
 
 

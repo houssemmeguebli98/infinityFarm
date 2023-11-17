@@ -8,15 +8,45 @@
     <div class="container mt-4">
         <h1 class="text-center mb-4" style="font-size: 24px;">Matériel associé </h1>
         <br>
+        {# Formulaire de recherche pour le Materiel #}
+        <form method="get" action="{{ path('app_materiel_index') }}" class="mb-4">
+            <div class="d-flex">
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="nommat" name="nommat" value="{{ app.request.query.get('nommat') }}" class="form-control" placeholder="Nom du Matériel">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="etatmat" name="etatmat" value="{{ app.request.query.get('etatmat') }}" class="form-control" placeholder="État ">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="quantitemat" name="quantitemat" value="{{ app.request.query.get('quantitemat') }}" class="form-control" placeholder="Quantité ">
+                    </div>
+                </div>
+                <div class="flex-grow-1 mr-2">
+                    <div class="form-group">
+                        <input type="text" id="dateajout" name="dateajout" value="{{ app.request.query.get('dateajout') }}" class="form-control" placeholder="Date d'ajout ">
+                    </div>
+                </div>
 
+                <div>
+                    <button type="submit" class="btn btn-primary">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+        </form>
         {% if materiels is not empty %}
             <table class="table table-bordered">
                 <thead class="thead-dark">
                 <tr>
-                    <th>Nommat</th>
-                    <th>Etatmat</th>
-                    <th>Quantitemat</th>
-                    <th>Dateajout</th>
+                    <th>Nom de materiel </th>
+                    <th>Etat</th>
+                    <th>Quantite</th>
+                    <th>Date d'ajout</th>
                     <th>Actions</th>
                     <!-- Ajoutez d'autres colonnes si nécessaire -->
                 </tr>
