@@ -11,6 +11,7 @@
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Parcs</h1>
         <br>
 
+        <br>
         {# Formulaire de recherche #}
         <form method="get" action="{{ path('app_parc_index') }}" class="mb-4">
             <div class="d-flex">
@@ -77,8 +78,16 @@
                         <td colspan="4">Aucun enregistrement trouvé</td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
             </table>
+            <div class="text-right">
+                <a href="{{ path('generate_pdf') }}" class="btn btn-primary" target="_blank">
+                    Exporter PDF <i class="fas fa-file-pdf"></i>
+                </a>
+            </div>
+
+
             <br>
             <div class="text-center">
                 <a href="{{ path('app_parc_new') }}" class="btn btn-success" title="Créer un nouveau parc">

@@ -54,6 +54,13 @@ class MaterielRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
-
+    public function findMaterielsEnPanne()
+    {
+        return $this->createQueryBuilder('m')
+            ->andWhere('m.etatmat = :panne')
+            ->setParameter('panne', 'On panne') // ajustez selon vos besoins
+            ->getQuery()
+            ->getResult();
+    }
 }
 

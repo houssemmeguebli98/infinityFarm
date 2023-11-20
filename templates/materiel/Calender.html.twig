@@ -1,0 +1,25 @@
+{% extends 'base.html.twig' %}
+
+
+{% block  contenu %}
+    <!-- Inclusion du CSS de FullCalendar -->
+    <link rel="stylesheet" href="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.css') }}" />
+
+    <!-- Inclusion de jQuery -->
+    <script src="{{ asset('https://code.jquery.com/jquery-3.6.4.min.js') }}"></script>
+    <!-- Inclusion de FullCalendar -->
+    <script src="{{ asset('https://cdnjs.cloudflare.com/ajax/libs/fullcalendar/3.10.2/fullcalendar.min.js') }}"></script>
+    <div id="calendar"></div>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            $('#calendar').fullCalendar({
+                header: {
+                    left: 'prev,next today',
+                    center: 'title',
+                    right: 'month,agendaWeek,agendaDay'
+                },
+                events: '{{ path('calendar_events') }}',
+            });
+        });
+    </script>
+{% endblock %}

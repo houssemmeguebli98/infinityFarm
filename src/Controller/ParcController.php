@@ -12,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use TCPDF;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+
 
 #[Route('/parc')]
 class ParcController extends AbstractController
@@ -40,6 +44,7 @@ class ParcController extends AbstractController
         return $this->render('parc/index.html.twig', [
             'parcs' => $parcs,
         ]);
+
     }
 
     #[Route('/new', name: 'app_parc_new', methods: ['GET', 'POST'])]
@@ -158,4 +163,6 @@ class ParcController extends AbstractController
             ]);
         }
     }
+
+
 }

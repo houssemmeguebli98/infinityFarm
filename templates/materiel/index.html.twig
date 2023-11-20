@@ -8,6 +8,7 @@
         <br>
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Matériels</h1>
         <br>
+
         {# Formulaire de recherche pour le Materiel #}
         <form method="get" action="{{ path('app_materiel_index') }}" class="mb-4">
             <div class="d-flex">
@@ -88,11 +89,41 @@
                         <td colspan="6">Aucun enregistrement trouvé</td>
                     </tr>
                 {% endfor %}
+
                 </tbody>
             </table>
-        </div>
-        <br>
 
+
+        </div>
+
+        <br>
+        <script>
+            function sendEmail() {
+                console.log('Tentative d\'envoi d\'e-mail...');
+                fetch('https://127.0.0.1:8000/mail/send_email')
+                    .then(response => {
+                        if (!response.ok) {
+                            throw new Error('Erreur lors de l\'envoi de l\'e-mail');
+                        }
+                        return response.json();
+                    })
+                    .then(data => {
+                        console.log('E-mail envoyé avec succès:', data);
+                    })
+                    .catch(error => {
+                        console.error('Erreur lors de l\'envoi de l\'e-mail:', error.message);
+                    });
+            }
+
+            // Appeler la fonction pour envoyer un e-mail immédiatement
+            sendEmail();
+
+            // Définir l'intervalle pour envoyer l'e-mail toutes les 3 minutes
+            setInterval(() => {
+                sendEmail();
+            }, 3 * 60 * 1000);
+        </script>
 
     </div>
+
 {% endblock %}

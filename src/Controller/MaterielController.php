@@ -9,6 +9,7 @@ use App\Repository\ParcRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -18,6 +19,7 @@ use Symfony\Component\Routing\Annotation\Route;
 class MaterielController extends AbstractController
 {
     private ParcRepository $parcRepository;
+
 
     #[Route('/', name: 'app_materiel_index', methods: ['GET'])]
     public function index(Request $request, MaterielRepository $materielRepository): Response
@@ -44,10 +46,21 @@ class MaterielController extends AbstractController
             $materiels = $materielRepository->findAll();
         }
 
+        // Récupérer les événements du calendrier directement dans l'action index
+        $materielEvents = [];
+        foreach ($materiels as $materiel) {
+            $materielEvents[] = [
+                'title' => $materiel->getNommat(),
+                'start' => $materiel->getDateajout()->format('Y-m-d'),
+            ];
+        }
+
         return $this->render('materiel/index.html.twig', [
             'materiels' => $materiels,
+            'materielEvents' => json_encode($materielEvents), // Convertir en JSON pour l'inclure dans le script Twig
         ]);
     }
+
 
     #[Route('/new/{nomParc}/{idParc}', name: 'app_materiel_new', methods: ['GET', 'POST'])]
     public function new(Request $request, ParcRepository $parcRepository, $idParc, $nomParc, EntityManagerInterface $entityManager): Response
@@ -150,6 +163,21 @@ class MaterielController extends AbstractController
         return $this->render('parc/afficherMateriel.html.twig', [
             'materiels' => $materiels,
         ]);
+    }
+    #[Route('/calendar-events', name: 'calendar_events')]
+    public function calendarEvents(): JsonResponse
+    {
+        $materiels = $this->getDoctrine()->getRepository(Materiel::class)->findAll();
+
+        $events = [];
+        foreach ($materiels as $materiel) {
+            $events[] = [
+                'title' => $materiel->getNommat(),
+                'start' => $materiel->getDateajout()->format('Y-m-d'),
+            ];
+        }
+
+        return $this->json($events);
     }
 
 
