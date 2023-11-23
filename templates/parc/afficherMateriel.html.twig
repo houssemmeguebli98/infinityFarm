@@ -73,6 +73,10 @@
                 {% endfor %}
                 </tbody>
             </table>
+            <!-- Afficher la pagination avec Bootstrap styles -->
+            <div class="pagination ">
+                {{ knp_pagination_render(materiels ) }}
+            </div>
         {% else %}
             <div class="alert alert-danger text-center" role="alert">
                 <strong>Aucun matériel associé trouvé</strong>

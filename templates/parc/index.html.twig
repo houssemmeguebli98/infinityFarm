@@ -7,7 +7,6 @@
         <br>
         <br>
 
-
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Parcs</h1>
         <br>
 
@@ -81,12 +80,16 @@
 
                 </tbody>
             </table>
-            <div class="text-right">
-                <a href="{{ path('generate_pdf') }}" class="btn btn-primary" target="_blank">
-                    Exporter PDF <i class="fas fa-file-pdf"></i>
-                </a>
+
+            <div class="pagination ">
+                {{ knp_pagination_render(parcs) }}
             </div>
 
+            <div class="text-right">
+                <button type="button" id="showHideSignatureFormButton" class="btn btn-primary">
+                    Exporter PDF avec Signature <i class="fas fa-file-pdf"></i>
+                </button>
+            </div>
 
             <br>
             <div class="text-center">
@@ -94,7 +97,80 @@
                     <i class="fas fa-plus"></i> Créer nouveau
                 </a>
             </div>
+
+
         </div>
+
         <br>
+        <script src="{{ asset('https://unpkg.com/signature_pad') }}"></script>
+
+        <div id="signatureForm" class="text-center" style="display: none;">
+            <canvas id="signatureCanvas" class="border border-dark mt-3" width="400" height="200"></canvas>
+            <br>
+            <button type="button" id="clearSignature" class="btn btn-danger mt-3">
+                <i class="fas fa-eraser"></i> Effacer
+            </button>
+            <br>
+            <button type="button" id="submitSignature" class="btn btn-primary mt-3">
+                <i class="fas fa-file-pdf"></i> Exporter PDF
+            </button>
+        </div>
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var showHideSignatureFormButton = document.getElementById('showHideSignatureFormButton');
+                var signatureForm = document.getElementById('signatureForm');
+
+                if (showHideSignatureFormButton && signatureForm) {
+                    showHideSignatureFormButton.addEventListener('click', function () {
+                        // Inverser l'état d'affichage du formulaire de signature lors du clic
+                        signatureForm.style.display = signatureForm.style.display === 'none' ? 'block' : 'none';
+                    });
+                }
+            });
+        </script>
+
+
+        <script>
+            document.addEventListener('DOMContentLoaded', function () {
+                var canvas = document.getElementById('signatureCanvas');
+                var signaturePad = new SignaturePad(canvas);
+
+                // Bouton pour effacer la signature
+                var clearButton = document.getElementById('clearSignature');
+                if (clearButton) {
+                    clearButton.addEventListener('click', function () {
+                        signaturePad.clear();
+                    });
+                }
+
+                // Bouton pour soumettre la signature et générer le PDF
+                var submitButton = document.getElementById('submitSignature');
+                if (submitButton) {
+                    submitButton.addEventListener('click', function () {
+                        // Récupérer les données de la signature
+                        var signatureData = signaturePad.toDataURL();
+
+                        // Soumettre la signature au contrôleur Symfony
+                        fetch('/generate-pdf', {
+                            method: 'POST',
+                            headers: {
+                                'Content-Type': 'application/json',
+                            },
+                            body: JSON.stringify({ signature: signatureData }),
+                        })
+                            .then(response => response.blob())
+                            .then(blob => {
+                                // Créer une URL pour le fichier PDF
+                                var pdfUrl = URL.createObjectURL(blob);
+
+                                // Ouvrir le PDF dans un nouvel onglet
+                                window.open(pdfUrl, '_blank');
+                            });
+                    });
+                }
+            });
+        </script>
+
     </div>
 {% endblock %}

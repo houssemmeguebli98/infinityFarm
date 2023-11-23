@@ -14,14 +14,14 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use TCPDF;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
-
+use Knp\Component\Pager\PaginatorInterface;
 
 
 #[Route('/parc')]
 class ParcController extends AbstractController
 {
     #[Route('/', name: 'app_parc_index', methods: ['GET'])]
-    public function index(Request $request,EntityManagerInterface $entityManager, ParcRepository $parcRepository): Response
+    public function index(Request $request,EntityManagerInterface $entityManager, ParcRepository $parcRepository ,PaginatorInterface $paginator): Response
     {
         $nomparc = $request->query->get('nomparc');
         $adresseparc = $request->query->get('adresseparc');
@@ -41,11 +41,17 @@ class ParcController extends AbstractController
             $parcs = $parcRepository->findAll();
         }
 
-        return $this->render('parc/index.html.twig', [
-            'parcs' => $parcs,
-        ]);
+        $pagination = $paginator->paginate(
+            $parcs,
+            $request->query->getInt('page', 1), // numéro de la page à afficher
+            5 // nombre d'éléments par page
+        );
 
+        return $this->render('parc/index.html.twig', [
+            'parcs' => $pagination,
+        ]);
     }
+
 
     #[Route('/new', name: 'app_parc_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
@@ -119,25 +125,7 @@ class ParcController extends AbstractController
         return $parcNames;
     }
 
-    #[Route('/statistiques', name: 'app_statistiques')]
-    public function statistiques(EntityManagerInterface $entityManager): Response
-    {
-        $parcRepository = $entityManager->getRepository(Parc::class);
-        $parcs = $parcRepository->findAll();
 
-        // Formattez les données selon les besoins de votre graphique
-        $parcData = [
-            'labels' => [], // Les étiquettes pour l'axe des X
-            'values' => [], // Les valeurs correspondantes
-        ];
-        foreach ($parcs as $parc) {
-            $parcData['labels'][] = $parc->getNomParc();
-            $parcData['values'][] = $parc->getSuperficieparc();
-        }
-        return $this->render('parc/statistiques.html.twig', [
-            'parcData' => json_encode($parcData),
-        ]);
-    }
     #[Route('/findbyname', name: 'find_name_parc', methods: ['GET'])]
     public function findByName(Request $request, EntityManagerInterface $entityManager): Response
     {

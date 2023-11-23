@@ -8,6 +8,7 @@ use App\Repository\MaterielRepository;
 use App\Repository\ParcRepository;
 use DateTime;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
@@ -22,7 +23,7 @@ class MaterielController extends AbstractController
 
 
     #[Route('/', name: 'app_materiel_index', methods: ['GET'])]
-    public function index(Request $request, MaterielRepository $materielRepository): Response
+    public function index(Request $request, MaterielRepository $materielRepository, PaginatorInterface $paginator): Response
     {
         $nommat = $request->query->get('nommat');
         $etatmat = $request->query->get('etatmat');
@@ -55,11 +56,19 @@ class MaterielController extends AbstractController
             ];
         }
 
+        // Utiliser la variable $pagination pour stocker les résultats paginés
+        $pagination = $paginator->paginate(
+            $materiels,
+            $request->query->getInt('page', 1), // numéro de la page à afficher
+            5 // nombre d'éléments par page
+        );
+
         return $this->render('materiel/index.html.twig', [
-            'materiels' => $materiels,
+            'materiels' => $pagination, // Passer $pagination au lieu de $paginator
             'materielEvents' => json_encode($materielEvents), // Convertir en JSON pour l'inclure dans le script Twig
         ]);
     }
+
 
 
     #[Route('/new/{nomParc}/{idParc}', name: 'app_materiel_new', methods: ['GET', 'POST'])]
@@ -137,7 +146,7 @@ class MaterielController extends AbstractController
     }
 
     #[Route('/materiels-par-parc/{nomparc}', name: 'materiels_par_parc')]
-    public function materielsParParc(string $nomparc, Request $request, MaterielRepository $materielRepository): Response
+    public function materielsParParc(string $nomparc, Request $request, MaterielRepository $materielRepository, PaginatorInterface $paginator): Response
     {
         $nommat = $request->query->get('nommat');
         $etatmat = $request->query->get('etatmat');
@@ -160,24 +169,16 @@ class MaterielController extends AbstractController
             $materiels = $materielRepository->findAll();
         }
 
+        // Utiliser la variable $pagination pour stocker les résultats paginés
+        $pagination = $paginator->paginate(
+            $materiels,
+            $request->query->getInt('page', 1), // numéro de la page à afficher
+            5 // nombre d'éléments par page
+        );
+
         return $this->render('parc/afficherMateriel.html.twig', [
-            'materiels' => $materiels,
+            'materiels' => $pagination, // Passer $pagination au lieu de $paginator
         ]);
-    }
-    #[Route('/calendar-events', name: 'calendar_events')]
-    public function calendarEvents(): JsonResponse
-    {
-        $materiels = $this->getDoctrine()->getRepository(Materiel::class)->findAll();
-
-        $events = [];
-        foreach ($materiels as $materiel) {
-            $events[] = [
-                'title' => $materiel->getNommat(),
-                'start' => $materiel->getDateajout()->format('Y-m-d'),
-            ];
-        }
-
-        return $this->json($events);
     }
 
 

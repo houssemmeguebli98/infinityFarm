@@ -62,5 +62,14 @@ class MaterielRepository extends ServiceEntityRepository
             ->getQuery()
             ->getResult();
     }
+    public function NombreMaterielParParc(string $nomparc): int
+    {
+        return $this->createQueryBuilder('m')
+            ->select('COUNT(m.nommat)')
+            ->andWhere('m.nomparc = :nomparc')
+            ->setParameter('nomparc', $nomparc)
+            ->getQuery()
+            ->getSingleScalarResult();
+    }
 }
 

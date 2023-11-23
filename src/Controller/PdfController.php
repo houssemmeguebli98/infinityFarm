@@ -3,42 +3,33 @@
 namespace App\Controller;
 
 use App\Repository\ParcRepository;
-use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
-use TCPDF;
-use TCPDF as BaseTCPDF;
+use setasign\Fpdi\Tcpdf\Fpdi; 
 
 class PdfController extends AbstractController
 {
-
-    #[Route('/generate-pdf', name: 'generate_pdf')]
-    public function generatePdf(EntityManagerInterface $entityManager, ParcRepository $parcRepository): Response
+    #[Route('/generate-pdf', name: 'generate_pdf', methods: ['GET', 'POST'])]
+    public function generatePdf(Request $request, ParcRepository $parcRepository): Response
     {
-        // Instancier TCPDF
-        $pdf = new TCPDF();
+        // Récupérer les données de la signature depuis la requête POST
+        $signatureData = json_decode($request->getContent(), true)['signature'];
 
-        // Ajouter une police TrueType Unicode
-        $fontPath = $this->getParameter('kernel.project_dir') . '/path-to-font/';
-        $fontname = $fontPath . 'FreeSerifItalic.ttf';
-        $pdf->AddFont('freeserif', '', $fontname, true);
-        $pdf->SetFont('freeserif', '', 14);
+        // Instancier FPDI (qui étend déjà TCPDF)
+        $pdf = new Fpdi();
 
         // Ajouter une page
         $pdf->AddPage();
         $pdf->Rect(5, 5, $pdf->GetPageWidth() - 10, $pdf->GetPageHeight() - 10);
 
-        // Ajouter le titre dans la police personnalisée
-        $pdf->SetFont('freeserif', '', 18); // Augmenter la taille de la police pour le titre
-        $pdf->cell(0, 10, 'Liste des parcs', 0, 1, 'C'); // Utiliser la largeur de la page pour la cellule
-        $pdf->SetFont('freeserif', '', 14); // Revenir à la taille de police précédente
+        // Ajouter le titre
+        $pdf->SetFont('helvetica', 'B', 14);
+        $pdf->Cell(0, 10, 'Liste des parcs', 0, 1, 'C');
+        $pdf->Ln();
 
-        // Ajouter un saut de ligne
-        $pdf->Ln(15); // Augmenter l'espace entre le titre et le tableau
-
-        // Récupérer la liste des parcs directement via l'autowiring
+        // Récupérer la liste des parcs
         $parcs = $parcRepository->findAll();
 
         // Définir les en-têtes du tableau
@@ -53,30 +44,40 @@ class PdfController extends AbstractController
             $pdf->Cell(60, 10, $header, 1, 0, 'C', 1); // Augmenter la largeur de la cellule
         }
         $pdf->Ln();
+        $pdf->SetFont('freeserif', 'A', 12); // Utiliser une police en gras pour les en-têtes
 
         // Ajouter les données du tableau
-        $pdf->SetFont('freeserif', '', 12); // Revenir à la taille de police précédente
         foreach ($parcs as $parc) {
             $pdf->Cell(60, 10, $parc->getNomparc(), 1);
             $pdf->Cell(60, 10, $parc->getAdresseparc(), 1);
             $pdf->Cell(60, 10, $parc->getSuperficieparc(), 1);
             $pdf->Ln();
         }
+        $pdf->Ln(20);
 
-        // Ajouter un saut de ligne après le tableau
-        $pdf->Ln(10);
 
-        // Ajouter la date au pied de page avec "INFINITYFARM"
+        // Ajouter la signature au PDF
+        $this->addSignatureToPdf($pdf, $signatureData);
         $pdf->SetFont('freeserif', 'I', 10); // Utiliser une police italique pour la date
-        $pdf->Cell(0, 10, ' ' . date('Y-m-d') . ' - INFINITYFARM', 0, 1, 'C');
+        $pdf->Cell(0, 120, ' Le ' . date( 'Y-m-d') . ' - Houssem Meguebli', 0, 1, 'R');
 
-        // Sortie du PDF
-        $pdfContent = $pdf->Output('liste_parcs.pdf', 'S');
+        $finalPdfContent = $pdf->Output('output.pdf', 'S');
 
-        // Réponse Symfony avec le contenu du PDF
-        $response = new Response($pdfContent);
+        // Réponse Symfony avec le contenu du PDF final
+        $response = new Response($finalPdfContent);
         $response->headers->set('Content-Type', 'application/pdf');
 
         return $response;
+    }
+
+    private function addSignatureToPdf(Fpdi $pdf, $signatureData)
+    {
+
+        $imgData = explode(',', $signatureData);
+        $imgBase64 = $imgData[1];
+        $imgBinary = base64_decode($imgBase64);
+
+        // Ajouter l'image de signature au PDF
+        $pdf->Image('@' . $imgBinary, 147, 177, 70);
     }
 }
