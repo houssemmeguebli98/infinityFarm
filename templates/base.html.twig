@@ -2,6 +2,15 @@
 <html lang="en">
 
 <head>
+    <!-- Leaflet CSS -->
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+
+    <!-- Leaflet JavaScript -->
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+
+    <!-- Leaflet Control Geocoder JavaScript -->
+    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
+
     <meta charset="utf-8">
     {% block titre %} <title>INFINITYFARM</title>{% endblock %}
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
@@ -10,7 +19,8 @@
 
     <!-- Favicon -->
     <link href="img/favicon.ico" rel="icon">
-
+    <link rel="stylesheet" href="{{ asset('css/styles.css') }}">
+    <link rel="stylesheet" href="{{ asset('public/css/styles.css') }}">
     <!-- Google Web Fonts -->
     <link rel="preconnect" href="https://fonts.gstatic.com">
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet">

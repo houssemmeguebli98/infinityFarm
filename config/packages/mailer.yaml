@@ -1,3 +1,3 @@
 framework:
     mailer:
-        dsn: '%env(MAILER_DSN)%'
+        dsn: 'smtp://smtp.office365.com:587?encryption=tls&auth_mode=login&username=hassan.jlassi@esprit-tn.com&password=yassine123'

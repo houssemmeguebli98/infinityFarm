@@ -13,20 +13,23 @@ class TerrainRepository extends ServiceEntityRepository
         parent::__construct($registry, Terrain::class);
     }
 
-    /**
-     * Search for terrains based on criteria.
-     *
-     * @param array $criteria An associative array of search criteria
-     *
-     * @return Terrain[] The array of matching terrains
-     */
-    public function search(array $criteria = []): array
+    public function searchByCriteria(array $criteria): array
     {
         $queryBuilder = $this->createQueryBuilder('t');
 
-        foreach ($criteria as $field => $value) {
-            // Adjust the comparison based on your needs (e.g., use '=' for exact match)
-            $queryBuilder->andWhere("t.$field LIKE :$field")->setParameter($field, "%$value%");
+        if (!empty($criteria['nomterrain'])) {
+            $queryBuilder->andWhere('t.nomTerrain LIKE :nomterrain')
+                ->setParameter('nomterrain', '%' . $criteria['nomterrain'] . '%');
+        }
+
+        if (!empty($criteria['localisation'])) {
+            $queryBuilder->andWhere('t.localisation LIKE :localisation')
+                ->setParameter('localisation', '%' . $criteria['localisation'] . '%');
+        }
+
+        if (!empty($criteria['superficie'])) {
+            $queryBuilder->andWhere('t.superficie = :superficie')
+                ->setParameter('superficie', $criteria['superficie']);
         }
 
         return $queryBuilder->getQuery()->getResult();

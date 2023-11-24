@@ -6,6 +6,7 @@ use App\Entity\Ressource;
 use App\Entity\Terrain;
 use App\Form\RessourceType;
 use App\Form\TerrainType;
+use App\Repository\TerrainRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -16,16 +17,31 @@ use Symfony\Component\Routing\Annotation\Route;
 class TerrainController extends AbstractController
 {
     #[Route('/', name: 'app_terrain_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, EntityManagerInterface $entityManager, TerrainRepository $terrainRepository): Response
     {
-        $terrains = $entityManager
-            ->getRepository(Terrain::class)
-            ->findAll();
+        $nomterrain = $request->query->get('nomterrain');
+        $localisation = $request->query->get('localisation');
+        $superficie = $request->query->get('superficie');
+
+        $criteria = [
+            'nomTerrain' => $nomterrain,
+            'localisation' => $localisation,
+            'superficie' => $superficie,
+        ];
+
+        if (!empty($nomterrain) || !empty($localisation) || !empty($superficie)) {
+            // Si au moins un paramètre de recherche est fourni, utilisez la méthode searchByCriteria.
+            $terrains = $terrainRepository->searchByCriteria($criteria);
+        } else {
+            // Si aucun paramètre de recherche n'est fourni, récupérez tous les terrains.
+            $terrains = $terrainRepository->findAll();
+        }
 
         return $this->render('terrain/index.html.twig', [
             'terrains' => $terrains,
         ]);
     }
+
 
     #[Route('/new', name: 'app_terrain_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response

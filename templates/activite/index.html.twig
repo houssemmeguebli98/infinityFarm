@@ -48,6 +48,23 @@
             </table>
         </div>
         <br>
+        <style>
+            .custom-pagination {
+                /* Ajoutez vos styles personnalisés ici */
+                /* Par exemple : */
+                font-size: 18px;
+                color: blue;
+            }
+        </style>
+        <div class="text-center">
+            {{ knp_pagination_render(activites, '@KnpPaginator/Pagination/sliding.html.twig', {
+                'pageRange': 10,
+                'align': 'center',
+                'urlTemplate': path('app_activite_index') ~ '?page={{ page }}',
+                'extraProximities': 2
+            }) }}
+        </div>
+        <br>
         <div class="text-center">
             <a href="{{ path('app_activite_new') }}" class="btn btn-success"> <i class="fas fa-plus"></i>Ajouter activite</a>
         </div>

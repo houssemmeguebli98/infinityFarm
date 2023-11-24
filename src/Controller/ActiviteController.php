@@ -5,20 +5,34 @@ namespace App\Controller;
 use App\Entity\Activite;
 use App\Form\ActiviteType;
 use Doctrine\ORM\EntityManagerInterface;
+use Knp\Component\Pager\PaginatorInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use App\Service\MailService;
 
 #[Route('/activite')]
 class ActiviteController extends AbstractController
 {
-    #[Route('/', name: 'app_activite_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    private MailService $mailService;
+
+    // Injectez le service dans le constructeur
+    public function __construct(MailService $mailService)
     {
-        $activites = $entityManager
-            ->getRepository(Activite::class)
-            ->findAll();
+        $this->mailService = $mailService;
+    }
+
+    #[Route('/', name: 'app_activite_index', methods: ['GET'])]
+    public function index(EntityManagerInterface $entityManager, PaginatorInterface $paginator, Request $request): Response
+    {
+        $query = $entityManager->getRepository(Activite::class)->createQueryBuilder('a')->getQuery();
+
+        $activites = $paginator->paginate(
+            $query,
+            $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1.
+            10 // Nombre d'éléments par page
+        );
 
         return $this->render('activite/index.html.twig', [
             'activites' => $activites,
@@ -33,8 +47,16 @@ class ActiviteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Enregistrez l'activité
             $entityManager->persist($activite);
             $entityManager->flush();
+
+            // Envoyez l'e-mail
+            $subject = 'Nouvelle activité enregistrée';
+            $content = 'Une nouvelle activité a été enregistrée.';
+            $recipient = $activite->getEmaildist();
+
+            $this->mailService->sendActivationEmail($recipient, $subject, $content);
 
             return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -81,4 +103,8 @@ class ActiviteController extends AbstractController
 
         return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
     }
+
+
+
+
 }

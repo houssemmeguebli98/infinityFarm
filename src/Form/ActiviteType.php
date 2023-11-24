@@ -4,6 +4,7 @@ namespace App\Form;
 
 use App\Entity\Activite;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CheckboxType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 
@@ -17,8 +18,7 @@ class ActiviteType extends AbstractType
             ->add('distact')
             ->add('emaildist')
             ->add('speciesres')
-            ->add('etatact')
-        ;
+            ->add('etatact');
     }
 
     public function configureOptions(OptionsResolver $resolver): void

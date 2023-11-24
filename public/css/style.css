@@ -607,6 +607,39 @@ pre code {
   margin-right: auto;
   margin-left: auto;
 }
+/* public/css/styles.css */
+
+.custom-pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.custom-pagination .pagination {
+  display: flex;
+  list-style: none;
+  padding: 0;
+}
+
+.custom-pagination .pagination li {
+  margin: 0 5px;
+}
+
+.custom-pagination .pagination a {
+  display: block;
+  padding: 10px;
+  text-decoration: none;
+  color: #333;
+  background-color: #fff;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+}
+
+.custom-pagination .pagination .active a {
+  background-color: #007bff;
+  color: #fff;
+}
+
 
 @media (min-width: 576px) {
   .container, .container-sm {
