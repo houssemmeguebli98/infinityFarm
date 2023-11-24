@@ -1,8 +1,9 @@
 {% extends 'back.html.twig' %}
 {% block body %}
 <body>
+<br>
     <div style="margin: 20px; background-color: white; color: #C9D1D9; padding: 20px; border-radius: 10px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);">
-        <h1 style="color: #8FB31D;">Transaction Details</h1>
+        <h1 style="color: #3D3635;">Transaction Details</h1>
         <br>
         <table class="table" style="border-collapse: collapse; width: 100%; margin-bottom: 20px; color: black;">
             <thead>
@@ -25,8 +26,8 @@
             </tbody>
         </table>
         
-        <a href="{{ path('app_backtransac_index') }}" style="background-color: #8FB31D; color: white; border: none; border-radius: 5px; padding: 10px 15px; text-decoration: none; margin-right: 20px;">Back to List</a>
-        <a href="{{ path('app_backtransac_edit', {'idTra': transaction.idTra}) }}" style="background-color: #CB6D51; color: white; border: none; border-radius: 5px; padding: 10px 15px; text-decoration: none;">Edit</a>
+        <a href="{{ path('app_backtransac_index') }}" style="background-color: #2B60DE; color: white; border: none; border-radius: 5px; padding: 10px 15px; text-decoration: none; margin-right: 20px;">Retour</a>
+        <a href="{{ path('app_backtransac_edit', {'idTra': transaction.idTra}) }}" style="background-color: #EAC117; color: white; border: none; border-radius: 5px; padding: 10px 15px; text-decoration: none;">Edit</a>
         <br>
         {{ include('backoffice/_delete_form.html.twig') }}
     </div>

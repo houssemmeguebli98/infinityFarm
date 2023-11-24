@@ -3,6 +3,7 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 
 #[ORM\Entity]
@@ -14,10 +15,18 @@ class Categtrans
     private $idCatTra;
 
     #[ORM\Column(length: 150)]
+    #[Assert\NotBlank]
+    #[Assert\Length(
+        min: 3,
+        max: 50,
+        minMessage: 'Le nom de catégorie doit avoir au moins 3 caractères.',
+        maxMessage: 'Le nom de catégorie ne peut pas dépasser 50 caractères.',
+    )]
 
     private ?string $nomCatTra = null;
 
     #[ORM\Column(length: 250)]
+    #[Assert\NotBlank]
     private ?string $descripCatTra = null;
     
 

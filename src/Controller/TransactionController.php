@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Transaction;
 use App\Form\TransactionType;
 use Doctrine\ORM\EntityManagerInterface;
+use App\Repository\TransactionRepository;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -14,14 +15,25 @@ use Symfony\Component\Routing\Annotation\Route;
 class TransactionController extends AbstractController
 {
     #[Route('/', name: 'app_transaction_index', methods: ['GET'])]
-    public function index(EntityManagerInterface $entityManager): Response
+    public function index(Request $request, TransactionRepository $transactionRepository): Response
     {
-        $transactions = $entityManager
-            ->getRepository(Transaction::class)
-            ->findAll();
+        // Récupérer les paramètres de recherche depuis la requête
+        $category = $request->query->get('category');
+        $type = $request->query->get('type');
+        $startDate = $request->query->get('startDate');
+        $endDate = $request->query->get('endDate');
+
+        // Appeler la méthode de recherche dans le repository
+        $transactions = $transactionRepository->findBySearchCriteria($category, $type, $startDate, $endDate);
+
+        // Calculer la différence entre les revenus et les dépenses
+        $sommeRevenu = $transactionRepository->calculateSumByType('Revenu', $startDate, $endDate);
+        $sommeDepense = $transactionRepository->calculateSumByType('Dépense', $startDate, $endDate);
+        $difference = $sommeRevenu - $sommeDepense;
 
         return $this->render('transaction/index.html.twig', [
             'transactions' => $transactions,
+            'difference' => $difference,
         ]);
     }
 
@@ -36,7 +48,7 @@ class TransactionController extends AbstractController
             $entityManager->persist($transaction);
             $entityManager->flush();
 
-            return $this->redirectToRoute('app_transaction_index', [], Response::HTTP_SEE_OTHER);
+            return $this->redirectToRoute('app_transaction_new', [], Response::HTTP_SEE_OTHER);
         }
 
         return $this->renderForm('transaction/new.html.twig', [

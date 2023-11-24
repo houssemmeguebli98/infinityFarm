@@ -57,7 +57,6 @@
         <table class="table" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
             <thead>
                 <tr style="background-color: #3D3635; color: white;">
-                    <th>IdCatTra</th>
                     <th>NomCatTra</th>
                     <th>DescripCatTra</th>
                     <th>Actions</th>
@@ -65,8 +64,7 @@
             </thead>
             <tbody>
             {% for categtran in categtrans %}
-                <tr style="border-bottom: 1px solid #ddd;">
-                    <td>{{ categtran.idCatTra }}</td>
+                <tr style="border-bottom: 1px solid #ddd;">                   
                     <td>{{ categtran.nomCatTra }}</td>
                     <td>{{ categtran.descripCatTra }}</td>
                     <td>

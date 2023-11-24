@@ -71,7 +71,7 @@ class BacktransacController extends AbstractController
         ]);
     }
 
-    #[Route('/{idTra}', name: 'app_backoffice_delete', methods: ['POST'])]
+    #[Route('/{idTra}', name: 'app_backtransac_delete', methods: ['POST'])]
     public function delete(Request $request, Transaction $transaction, EntityManagerInterface $entityManager): Response
     {
         if ($this->isCsrfTokenValid('delete'.$transaction->getIdTra(), $request->request->get('_token'))) {

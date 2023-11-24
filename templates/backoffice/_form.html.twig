@@ -2,19 +2,19 @@
 <div class="featuristic-container">
     {{ form_start(form, {'attr': {'class': 'featuristic-form'}}) }}
         <div class="form-group">
-            {{ form_label(form.categTra, 'Catégorie', {'label_attr': {'class': 'form-label', 'style': 'color: white;'}}) }}
+            {{ form_label(form.categTra, 'Catégorie', {'label_attr': {'class': 'form-label', 'style': 'color: gray;'}}) }}
             {{ form_widget(form.categTra, {'attr': {'class': 'form-control featuristic-input'}}) }}
             {{ form_errors(form.categTra) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.typeTra, 'Type', {'label_attr': {'class': 'form-label', 'style': 'color: white;'}}) }}
+            {{ form_label(form.typeTra, 'Type', {'label_attr': {'class': 'form-label', 'style': 'color: gray;'}}) }}
             {{ form_widget(form.typeTra, {'attr': {'class': 'form-control featuristic-input'}}) }}
             {{ form_errors(form.typeTra) }}
         </div>
 
         <div class="form-group">
-            {{ form_label(form.dateTra, 'Date', {'label_attr': {'class': 'form-label', 'style': 'color: white;'}}) }}
+            {{ form_label(form.dateTra, 'Date', {'label_attr': {'class': 'form-label', 'style': 'color: gray;'}}) }}
             <div class="input-group date">
                 {{ form_widget(form.dateTra) }}
                 <div class="input-group-addon">
@@ -26,7 +26,7 @@
         <br>
 
         <div class="form-group">
-            {{ form_label(form.montant, 'Montant', {'label_attr': {'class': 'form-label', 'style': 'color: white;'}}) }}
+            {{ form_label(form.montant, 'Montant', {'label_attr': {'class': 'form-label', 'style': 'color: gray;'}}) }}
             {{ form_widget(form.montant, {'attr': {'class': 'form-control featuristic-input'}}) }}
             {{ form_errors(form.montant) }}
         </div>

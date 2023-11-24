@@ -4,6 +4,8 @@
 
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
+      <link href="{{ asset('img/icon.jpg') }}" rel="icon">
+
   <title>INFINITYFARM | Dashboard</title>
 
 
@@ -221,16 +223,16 @@
         <ul class="nav nav-pills nav-sidebar flex-column" data-widget="treeview" role="menu" data-accordion="false">
           <!-- Add icons to the links using the .nav-icon class
                with font-awesome or any other icon font library -->
-          <li class="nav-item menu-open">
-            <a class="nav-link active" onclick="window.location.href='{{ path('app_transaction_new') }}'">
+          <li class="nav-item">
+            <a class="nav-link" onclick="window.location.href='{{ path('app_backtransac_index') }}'">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
-                Gestion Transaction
+                Gestion Transactions
               </p>
             </a>
           </li>
           <li class="nav-item">
-            <a href="#" class="nav-link">
+            <a class="nav-link" onclick="window.location.href='{{ path('app_backcateg_index') }}'">
               <i class="nav-icon fas fa-tachometer-alt"></i>
               <p>
                 Gestion catégories transaction

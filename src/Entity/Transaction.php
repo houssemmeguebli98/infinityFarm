@@ -23,7 +23,7 @@ class Transaction
     #[ORM\Column]
     private ?\DateTime $dateTra = null;
 
-    #[ORM\Column]
+    #[ORM\Column(type: 'integer')]
     private ?int $montant = null;
 
     public function getIdTra(): ?int

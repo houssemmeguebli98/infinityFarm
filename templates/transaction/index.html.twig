@@ -54,6 +54,25 @@
     <div style="margin: 20px;">
         <h1 style="color: #8FB31D;">Les Transactions</h1>
         <br>
+    <p style="font-size: 24px; text-align: center; ">Vous avez {{ difference }} dt dans votre caisse</p>
+        {# Exemple dans un fichier Twig #}
+<form action="{{ path('app_transaction_index') }}" method="get">
+    <label for="category">Catégorie :</label>
+    <input type="text" name="category" id="category">
+
+    <label for="type">Type :</label>
+    <input type="text" name="type" id="type">
+
+    <label for="startDate">Date de début :</label>
+    <input type="date" name="startDate" id="startDate">
+
+    <label for="endDate">Date de fin :</label>
+    <input type="date" name="endDate" id="endDate">
+
+<button type="submit"  style="background-color: #8FB31D; color: white; border: none; border-radius: 5px; padding: 10px 15px;">Rechercher</button></form>
+
+
+            <br>
         <table class="table" style="border-collapse: collapse; width: 100%; margin-bottom: 20px;">
             <thead>
                 <tr style="background-color: #3D3635; color: white;">
@@ -85,6 +104,9 @@
         </table>
         
         <button style="background-color: #8FB31D; color: white; border: none; border-radius: 5px; padding: 10px 15px;" onclick="window.location.href='{{ path('app_transaction_new') }}'">Ajouter</button>
+        <a style="background-color: #8FB31D; color: white; border: none; border-radius: 5px; padding: 10px 15px;" href="{{ path('generate_pdf') }}" target="_blank">Générer PDF</a>
+        <a style="background-color: #8FB31D; color: white; border: none; border-radius: 5px; padding: 10px 15px;" href="{{ path('app_home') }}" target="_blank">Poser une question</a>
+
     </div>
 </body>
 {% endblock %}
