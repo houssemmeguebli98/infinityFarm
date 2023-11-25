@@ -61,12 +61,14 @@
         <label for="_password">Mot de passe:</label>
         <input type="password" id="_password" name="_password" required>
 
+
         <input type="submit" value="Se connecter">
 
         <a href="{{ path('app_signup') }}" class="signup-button">S'inscrire</a>
-        <div style="position: fixed; top: 20px; right: 20px;">
-            <a href="{{ path('app_signup') }}" style="background-color: green; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">S'inscrire</a>
-        </div>
+        <a href="{{ path('app_facial_recognition') }}" class="signup-button">reconnaissance Faciale</a>
+        <!-- Ajouter le lien "Mot de passe oublié" ici -->
+        <p><a href="{{ path('app_mail') }}">Mot de passe oublié ?</a></p>
+
 
         {% for message in app.flashes('error') %}
             <p style="color: red;">{{ message }}</p>

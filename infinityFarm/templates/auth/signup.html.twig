@@ -1,165 +1,42 @@
 {% extends 'base.html.twig' %}
+
 {% block body %}
     <!DOCTYPE html>
     <html lang="fr">
     <head>
-
         <meta charset="UTF-8">
         <title>Inscription</title>
-
-        <style>
-
-            .form-container {
-                width: 500px;
-                margin: 0 auto;
-
-            }
-
-
-            .form-group {
-                margin-bottom: 10px;
-            }
-
-            label {
-                font-size: 16px;
-                font-weight: bold;
-            }
-
-            input, select {
-                width: 100%;
-                padding: 10px;
-                border: 1px solid #ccc;
-                border-radius: 5px;
-            }
-
-            input[type="checkbox"] {
-                margin-left: 10px;
-            }
-
-            button {
-                width: 100%;
-                background-color: #000;
-                color: #fff;
-                font-size: 16px;
-                font-weight: bold;
-                cursor: pointer;
-            }
-        </style>
-
-
-        <style>
-            body {
-                font-family: Arial, sans-serif;
-                background-color: #f5f5f5;
-                margin: 0;
-                padding: 0;
-            }
-
-            form {
-                width: 500px;
-                margin: 100px auto;
-                background: #fff;
-                padding: 20px;
-                border-radius: 5px;
-                box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-            }
-
-            label {
-                display: block;
-                margin: 10px 0;
-            }
-
-            input[type="text"],
-            input[type="email"],
-            input[type="password"] {
-                width: calc(100% - 22px);
-                padding: 5px;
-                border: 1px solid #ccc;
-                border-radius: 3px;
-            }
-
-            input[type="submit"] {
-                width: 100%;
-                padding: 10px;
-                margin: 10px 0;
-                background: #4CAF50;
-                color: white;
-                border: none;
-                border-radius: 3px;
-                cursor: pointer;
-            }
-
-            input[type="submit"]:hover {
-                background: #45a049;
-            }
-        </style>
+        <!-- ... Autres balises head ... -->
     </head>
     <body>
-    <form action="{{ path('app_signup') }}" method="post" class="form-container">
+    <form action="{{ path('app_signup') }}" method="post" class="form-container" enctype="multipart/form-data">
+        {{ form_start(form) }}
+
         <h2>Inscription</h2>
 
-        <div class="form-group">
-            <label for="nom">Nom</label>
-            <input type="text" id="nom" name="nom" required>
-        </div>
+        {{ form_row(form.nom) }}
+        {{ form_row(form.prenom) }}
+        {{ form_row(form.mail) }}
+        {{ form_row(form.motdepasse) }}
+        {{ form_row(form.role) }}
+        {{ form_row(form.sexe) }}
+        {{ form_row(form.ville) }}
+        {{ form_row(form.numerotelephone) }}
 
-        <div class="form-group">
-            <label for="prenom">Prénom</label>
-            <input type="text" id="prenom" name="prenom" required>
-        </div>
-
-        <div class="form-group">
-            <label for="email">Email</label>
-            <input type="email" id="email" name="email" required>
-        </div>
-
-        <div class="form-group">
-            <label for="password">Mot de passe</label>
-            <input type="password" id="password" name="password" required>
-        </div>
-
-        <div class="form-group">
-            <label for="role">Role</label>
-            <select id="role" name="role" required>
-                <option value="agriculteur">AGRICULTEUR</option>
-                <option value="ouvrier">OUVRIER</option>
-            </select>
-        </div>
-
-
-        <div class="form-group">
-            <label for="sexe">Sexe</label>
-            <select id="sexe" name="sexe" required>
-                <option value="homme">Homme</option>
-                <option value="femme">Femme</option>
-            </select>
-        </div>
-
-        <div class="form-group">
-            <label for="ville">Ville</label>
-            <input type="text" id="ville" name="ville" required>
-        </div>
-
-        <div class="form-group">
-            <label for="numerotelephone">Numéro de téléphone</label>
-            <input type="text" id="numerotelephone" name="numerotelephone" required>
-        </div>
+        {{ form_row(form.profileImageFile) }}
 
         <input type="submit" value="S'inscrire">
+
         <div style="position: fixed; top: 20px; right: 20px;">
             <a href="{{ path('app_signin') }}" style="background-color: green; color: white; padding: 10px 20px; text-decoration: none; border-radius: 5px;">Signin</a>
         </div>
 
+        {{ form_end(form) }}
 
-        {% for message in app.flashes('error') %}
-            <p style="color: red;">{{ message }}</p>
-        {% endfor %}
-        {# Afficher les messages d'erreur ici #}
         {% for message in app.flashes('error') %}
             <p style="color: red;">{{ message }}</p>
         {% endfor %}
     </form>
-
     </body>
     </html>
 {% endblock %}

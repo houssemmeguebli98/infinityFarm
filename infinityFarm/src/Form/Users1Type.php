@@ -17,6 +17,7 @@ use Symfony\Component\Validator\Context\ExecutionContextInterface;
 use Doctrine\ORM\EntityManagerInterface;
 
 use Symfony\Component\Form\Extension\Core\Type\ChoiceType;
+use Symfony\Component\Form\Extension\Core\Type\FileType;
 
 
 class Users1Type extends AbstractType
@@ -60,14 +61,14 @@ class Users1Type extends AbstractType
                     ]),
                 ],
             ])
-        ->add('role', ChoiceType::class, [
-            'choices' => [
-                'OUVRIER' => 'OUVRIER',
-                'AGRICULTEUR' => 'AGRICULTEUR',
-                // Ajoutez d'autres rôles si nécessaire
-            ],
-            'placeholder' => 'Sélectionnez un rôle',
-        ])
+            ->add('role', ChoiceType::class, [
+                'choices' => [
+                    'OUVRIER' => 'OUVRIER',
+                    'AGRICULTEUR' => 'AGRICULTEUR',
+                    // Ajoutez d'autres rôles si nécessaire
+                ],
+                'placeholder' => 'Sélectionnez un rôle',
+            ])
 
             ->add('sexe', ChoiceType::class, [
                 'choices' => [
@@ -79,7 +80,10 @@ class Users1Type extends AbstractType
             ])
             ->add('motdepasse')
             ->add('ville')
-        ;
+            ->add('profileImageFile', FileType::class, [
+                'label' => 'Photo de profil',
+                'required' => true,
+            ]);
     }
 
     public function configureOptions(OptionsResolver $resolver)
