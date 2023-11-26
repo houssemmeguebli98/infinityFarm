@@ -233,6 +233,12 @@
                             <p>Materiels</p>
                         </a>
                     </li>
+                    <li class="nav-item">
+                        <a class="nav-link {% if app.request.attributes.get('_route') == 'app_statistiques_back' %}active{% endif %}" href="{{ path('app_statistiques_back') }}">
+                            <i class="nav-icon fas fa-tachometer-alt"></i>
+                            <p>Statistiques</p>
+                        </a>
+                    </li>
                 </ul>
             </nav>
             <!-- /.sidebar-menu -->

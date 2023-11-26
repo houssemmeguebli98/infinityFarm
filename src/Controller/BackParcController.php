@@ -112,25 +112,6 @@ class BackParcController extends AbstractController
             'materiels' => $materiels,
         ]);
     }
-    #[Route('/statback', name: 'app_back_statistiques')]
-    public function statistiques(EntityManagerInterface $entityManager,MaterielRepository $repository): Response
-    {
-        $parcRepository = $entityManager->getRepository(Parc::class);
-        $parcs = $parcRepository->findAll();
-
-        // Formattez les données selon les besoins de votre graphique
-        $parcData = [
-            'labels' => [], // Les étiquettes pour l'axe des X
-            'values' => [], // Les valeurs correspondantes
-        ];
-        foreach ($parcs as $parc) {
-            $parcData['labels'][] = $parc->getNomParc();
-            $parcData['values'][] = $parc->getSuperficieparc();
-        }
-        return $this->render('back_parc/stat.html.twig', [
-            'parcData' => json_encode($parcData),
-        ]);
-    }
 
     
 }

@@ -71,5 +71,20 @@ class MaterielRepository extends ServiceEntityRepository
             ->getQuery()
             ->getSingleScalarResult();
     }
+
+    public function getParcsWithMaterialCount($nomParc)
+    {
+        $queryBuilder = $this->createQueryBuilder('m');
+
+        $query = $queryBuilder
+            ->select('m.nomparc', 'COUNT(m.idmat) as material_count')
+            ->andWhere('m.nomparc = :nomparc')
+            ->setParameter('nomparc', $nomParc)
+            ->groupBy('m.nomparc')
+            ->getQuery();
+
+        return $query->getResult();
+    }
+
 }
 
