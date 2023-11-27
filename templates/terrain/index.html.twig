@@ -6,6 +6,13 @@
     <div class="container mt-4">
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des terrains</h1>
 
+        {# Affichage des messages flash #}
+        {% for flashMessage in app.flashes('success') %}
+            <div class="alert alert-success" role="alert">
+                {{ flashMessage }}
+            </div>
+        {% endfor %}
+
         {# Formulaire de recherche #}
         <form method="get" action="{{ path('app_terrain_index') }}" class="mb-4">
             <div class="d-flex">
@@ -80,69 +87,55 @@
                 {% endfor %}
                 </tbody>
             </table>
+
+            <!-- Button to navigate to the statistics page -->
+            <a href="{{ path('app_statistic_resources_per_terrain') }}" class="btn btn-primary">
+                Afficher les statistiques
+            </a>
         </div>
 
         <br>
         <div class="text-center">
-            <a href="{{ path('app_terrain_new') }}" class="btn btn-success">
+            <a href="{{ path('app_terrain_new') }}" class="btn btn-success" id="add-terrain-button">
                 <i class="fas fa-plus"></i> Ajouter terrain
             </a>
         </div>
-
-        {# Map Container #}
-        <div id="map-container" class="mt-4" style="height: 400px;"></div>
-
-        {# Button to Show Location on Map #}
-        <div class="text-center mt-4">
-            <button class="btn btn-primary" id="show-map-button">
-                Show Location on Map
-            </button>
-        </div>
-
     </div>
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        var convertButtons = document.querySelectorAll('.convert-to-hectare');
 
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            var convertButtons = document.querySelectorAll('.convert-to-hectare');
-
-            convertButtons.forEach(function(button) {
-                button.addEventListener('click', function() {
-                    var superficie = parseFloat(this.dataset.superficie);
-                    if (!isNaN(superficie)) {
-                        var superficieInHectare = superficie / 10000;  // 1 square meter = 0.0001 hectare
-                        alert("Superficie in Hectare: " + superficieInHectare.toFixed(4));
-                    } else {
-                        alert("Invalid superficie value");
-                    }
-                });
-            });
-
-            var showMapButton = document.getElementById('show-map-button');
-            var mapContainer = document.getElementById('map-container');
-
-            showMapButton.addEventListener('click', function() {
-                var latitude = 36.862499;
-                var longitude = 10.195556;
-
-                var map = L.map(mapContainer).setView([latitude, longitude], 15);
-
-                L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-                    attribution: '© OpenStreetMap contributors'
-                }).addTo(map);
-
-                L.marker([latitude, longitude]).addTo(map)
-                    .bindPopup('Terrain Location')
-                    .openPopup();
+        convertButtons.forEach(function (button) {
+            button.addEventListener('click', function () {
+                var superficie = parseFloat(this.dataset.superficie);
+                if (!isNaN(superficie)) {
+                    var superficieInHectare = superficie / 10000;  // 1 square meter = 0.0001 hectare
+                    alert("Superficie in Hectare: " + superficieInHectare.toFixed(4));
+                } else {
+                    alert("Invalid superficie value");
+                }
             });
         });
+    });
+
+</script>
+    <!-- JavaScript pour gérer le message temporaire -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Récupération de l'élément du message
+            var successMessage = document.querySelector('.alert-success');
+
+            // Vérification si le message existe
+            if (successMessage) {
+                // Affichage initial du message
+                successMessage.style.display = 'block';
+
+                // Disparition du message après 5 secondes
+                setTimeout(function() {
+                    successMessage.style.display = 'none';
+                }, 5000);
+            }
+            
+        });
     </script>
-
-    <!-- Leaflet CSS -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
-
-    <!-- Leaflet JavaScript -->
-    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
-
-    <!-- Leaflet Control Geocoder JavaScript -->
-    <script src="https://unpkg.com/leaflet-control-geocoder/dist/Control.Geocoder.js"></script>
 {% endblock %}

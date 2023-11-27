@@ -30,7 +30,7 @@
                         <td>{{ activite.distact }}</td>
                         <td>{{ activite.emaildist }}</td>
                         <td>{{ activite.speciesres }}</td>
-                        <td>{{ activite.etatact }}</td>
+                        <td style="background-color: {% if activite.etatact == 'en attente' %}lightcoral{% elseif activite.etatact == 'terminé' %}palegreen{% endif %}">{{ activite.etatact }}</td>
                         <td>
                             <div class="btn-group" role="group">
                                 <a href="{{ path('app_activite_show', {'idact': activite.idact}) }}" class="btn btn-info"><i class="fas fa-eye"></i></a>
@@ -48,14 +48,6 @@
             </table>
         </div>
         <br>
-        <style>
-            .custom-pagination {
-                /* Ajoutez vos styles personnalisés ici */
-                /* Par exemple : */
-                font-size: 18px;
-                color: blue;
-            }
-        </style>
         <div class="text-center">
             {{ knp_pagination_render(activites, '@KnpPaginator/Pagination/sliding.html.twig', {
                 'pageRange': 10,
@@ -67,6 +59,7 @@
         <br>
         <div class="text-center">
             <a href="{{ path('app_activite_new') }}" class="btn btn-success"> <i class="fas fa-plus"></i>Ajouter activite</a>
+            <a href="{{ path('generate_pdf_activite') }}" class="btn btn-primary">Télécharger en PDF</a>
         </div>
     </div>
 {% endblock %}

@@ -11,6 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\MailService;
+use Knp\Snappy\Pdf;
 
 #[Route('/activite')]
 class ActiviteController extends AbstractController
@@ -68,12 +69,18 @@ class ActiviteController extends AbstractController
     }
 
     #[Route('/{idact}', name: 'app_activite_show', methods: ['GET'])]
-    public function show(Activite $activite): Response
+    public function show(Activite $activite = null): Response
     {
+        if ($activite === null) {
+            // Rediriger l'utilisateur vers la page d'index s'il n'y a pas d'activité
+            return $this->redirectToRoute('app_activite_index');
+        }
+
         return $this->render('activite/show.html.twig', [
             'activite' => $activite,
         ]);
     }
+
 
     #[Route('/{idact}/edit', name: 'app_activite_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
@@ -104,7 +111,37 @@ class ActiviteController extends AbstractController
         return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
     }
 
+    #[Route('/export-pdf', name: 'app_activite_export_pdf', methods: ['GET'])]
+    public function exportPdf(EntityManagerInterface $entityManager, Pdf $pdf): Response
+    {
+        try {
+            $activites = $entityManager->getRepository(Activite::class)->findAll();
 
+            if (empty($activites)) {
+                throw $this->createNotFoundException('Aucune activité trouvée');
+            }
+
+            $html = $this->renderView('activite/pdf.html.twig', [
+                'activites' => $activites,
+            ]);
+
+            $filename = 'activites.pdf';
+
+            return new Response(
+                $pdf->getOutputFromHtml($html),
+                200,
+                [
+                    'Content-Type' => 'application/pdf',
+                    'Content-Disposition' => 'attachment; filename="' . $filename . '"',
+                ]
+            );
+        } catch (\Exception $e) {
+            // Gérer les erreurs (afficher ou journaliser l'erreur, etc.)
+            dump($e->getMessage());
+            // Retourner une réponse d'erreur si nécessaire
+            return new Response('Erreur lors de la génération du PDF', 500);
+        }
+    }
 
 
 }

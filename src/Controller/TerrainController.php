@@ -54,6 +54,9 @@ class TerrainController extends AbstractController
             $entityManager->persist($terrain);
             $entityManager->flush();
 
+            // Ajoutez le message flash ici
+            $this->addFlash('success', 'Le nouveau terrain a été ajouté avec succès.');
+
             return $this->redirectToRoute('app_terrain_index', [], Response::HTTP_SEE_OTHER);
         }
 
@@ -62,6 +65,7 @@ class TerrainController extends AbstractController
             'form' => $form,
         ]);
     }
+
 
     #[Route('/{idterrain}', name: 'app_terrain_show', methods: ['GET'])]
     public function show(Terrain $terrain): Response

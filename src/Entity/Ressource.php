@@ -87,4 +87,13 @@ class Ressource
 
         return $this;
     }
+
+    public function getCountByTerrainQuery(): string
+    {
+        return "SELECT COUNT(r.idres) as resourceCount, t.nomterrain as terrainName 
+            FROM App\Entity\Ressource r
+            LEFT JOIN r.idterrain t
+            GROUP BY t.idterrain";
+    }
+
 }
