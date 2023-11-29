@@ -17,7 +17,11 @@
         <form action="{{ path('send_email') }}" method="post">
             <label for="email">E-mail:</label>
             <input type="email" id="email" name="email" required>
-            <button type="submit">Send Code</button>
+            <button type="submit">Send Code by Email</button>
         </form>
+
+        {# Lien vers le template pour envoyer un code par SMS #}
+        <a href="{{ path('reset_sms') }}">Send Code by SMS</a>
     </div>
 {% endblock %}
+
