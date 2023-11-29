@@ -76,7 +76,7 @@
                         </td>
                         <td>
                             <button class="btn btn-success convert-to-hectare" data-superficie="{{ terrain.superficie }}">
-                                Convert to Hectare
+                                <i class="fas fa-ruler"></i>
                             </button>
                         </td>
                     </tr>
@@ -101,24 +101,7 @@
             </a>
         </div>
     </div>
-<script>
-    document.addEventListener("DOMContentLoaded", function() {
-        var convertButtons = document.querySelectorAll('.convert-to-hectare');
 
-        convertButtons.forEach(function (button) {
-            button.addEventListener('click', function () {
-                var superficie = parseFloat(this.dataset.superficie);
-                if (!isNaN(superficie)) {
-                    var superficieInHectare = superficie / 10000;  // 1 square meter = 0.0001 hectare
-                    alert("Superficie in Hectare: " + superficieInHectare.toFixed(4));
-                } else {
-                    alert("Invalid superficie value");
-                }
-            });
-        });
-    });
-
-</script>
     <!-- JavaScript pour gérer le message temporaire -->
     <script>
         document.addEventListener("DOMContentLoaded", function() {
@@ -135,7 +118,43 @@
                     successMessage.style.display = 'none';
                 }, 5000);
             }
-            
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var convertButtons = document.querySelectorAll('.convert-to-hectare');
+
+            convertButtons.forEach(function (button) {
+                button.addEventListener('click', function () {
+                    var superficie = parseFloat(this.dataset.superficie);
+                    if (!isNaN(superficie)) {
+                        var superficieInHectare = superficie / 10000;  // 1 square meter = 0.0001 hectare
+
+                        // Utiliser SweetAlert pour afficher la conversion
+                        Swal.fire({
+                            icon: false,  // Ne pas afficher d'icône
+                            title: 'Conversion en Hectare',
+                            html: '<i class="fas fa-ruler"></i><br>Superficie en Hectare : ' + superficieInHectare.toFixed(4),
+                            showCloseButton: true,
+                            showCancelButton: false,
+                            focusConfirm: false,
+                            confirmButtonText: '<i class="fas fa-check"></i>',  // Bouton OK sans texte
+                            confirmButtonAriaLabel: 'OK',
+                        });
+
+                    } else {
+                        // Afficher une alerte en cas de valeur invalide
+                        Swal.fire({
+                            icon: 'error',
+                            title: 'Erreur',
+                            text: 'Valeur de superficie invalide',
+                            confirmButtonText: 'OK'
+                        });
+                    }
+                });
+            });
         });
     </script>
 {% endblock %}

@@ -18,7 +18,7 @@ class TerrainRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('t');
 
         if (!empty($criteria['nomterrain'])) {
-            $queryBuilder->andWhere('t.nomTerrain LIKE :nomterrain')
+            $queryBuilder->where('t.nomterrain LIKE :nomterrain')
                 ->setParameter('nomterrain', '%' . $criteria['nomterrain'] . '%');
         }
 
@@ -34,4 +34,5 @@ class TerrainRepository extends ServiceEntityRepository
 
         return $queryBuilder->getQuery()->getResult();
     }
+
 }

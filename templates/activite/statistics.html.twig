@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Statistiques des Activités{% endblock %}
+
+{% block contenu %}
+    <div class="container mt-4">
+        <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Statistiques des Activités</h1>
+
+        <!-- Div pour afficher le graphique Highcharts -->
+        <div id="chart"></div>
+        <br>
+        <a href="{{ path('app_activite_index') }}" class="btn btn-primary">Retour à la page Activités</a>
+
+        <br>
+        <!-- Autres éléments de votre page Twig... -->
+    </div>
+
+    <!-- Inclusion des bibliothèques jQuery et Highcharts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="https://code.highcharts.com/highcharts.js"></script>
+
+    <!-- Script Highcharts pour afficher le graphique -->
+    <script>
+        $(document).ready(function () {
+            var chart = new Highcharts.Chart({
+                chart: {
+                    renderTo: 'chart'
+                },
+                plotOptions: {
+                    pie: {
+                        allowPointSelect: true,
+                        cursor: 'pointer',
+                        dataLabels: {
+                            enabled: true,
+                            format: '<b>{point.name}</b>: {point.percentage:.1f} %',
+                        },
+                    },
+                },
+                series: [{
+                    type: 'pie',
+                    name: 'Statistiques',
+                    data: [
+                        ['En Attente', 11],
+                        ['Terminé', 4]
+                    ],
+                }],
+                title: {
+                    text: 'Statistiques des activités'
+                }
+            });
+        });
+    </script>
+{% endblock %}

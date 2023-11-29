@@ -12,6 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\MailService;
 use Knp\Snappy\Pdf;
+use Ob\HighchartsBundle\Highcharts\Highchart;
 
 #[Route('/activite')]
 class ActiviteController extends AbstractController
@@ -31,8 +32,8 @@ class ActiviteController extends AbstractController
 
         $activites = $paginator->paginate(
             $query,
-            $request->query->getInt('page', 1), // Numéro de la page. Par défaut, 1.
-            10 // Nombre d'éléments par page
+            $request->query->getInt('page', 1),
+            10
         );
 
         return $this->render('activite/index.html.twig', [
@@ -48,16 +49,11 @@ class ActiviteController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            // Enregistrez l'activité
             $entityManager->persist($activite);
             $entityManager->flush();
 
-            // Envoyez l'e-mail
-            $subject = 'Nouvelle activité enregistrée';
-            $content = 'Une nouvelle activité a été enregistrée.';
             $recipient = $activite->getEmaildist();
-
-            $this->mailService->sendActivationEmail($recipient, $subject, $content);
+            $this->mailService->sendActivationEmail($recipient, 'Nouvelle activité enregistrée', 'Une nouvelle activité a été enregistrée.');
 
             return $this->redirectToRoute('app_activite_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -72,7 +68,6 @@ class ActiviteController extends AbstractController
     public function show(Activite $activite = null): Response
     {
         if ($activite === null) {
-            // Rediriger l'utilisateur vers la page d'index s'il n'y a pas d'activité
             return $this->redirectToRoute('app_activite_index');
         }
 
@@ -80,7 +75,6 @@ class ActiviteController extends AbstractController
             'activite' => $activite,
         ]);
     }
-
 
     #[Route('/{idact}/edit', name: 'app_activite_edit', methods: ['GET', 'POST'])]
     public function edit(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
@@ -103,7 +97,7 @@ class ActiviteController extends AbstractController
     #[Route('/{idact}', name: 'app_activite_delete', methods: ['POST'])]
     public function delete(Request $request, Activite $activite, EntityManagerInterface $entityManager): Response
     {
-        if ($this->isCsrfTokenValid('delete'.$activite->getIdact(), $request->request->get('_token'))) {
+        if ($this->isCsrfTokenValid('delete' . $activite->getIdact(), $request->request->get('_token'))) {
             $entityManager->remove($activite);
             $entityManager->flush();
         }
@@ -136,12 +130,57 @@ class ActiviteController extends AbstractController
                 ]
             );
         } catch (\Exception $e) {
-            // Gérer les erreurs (afficher ou journaliser l'erreur, etc.)
             dump($e->getMessage());
-            // Retourner une réponse d'erreur si nécessaire
             return new Response('Erreur lors de la génération du PDF', 500);
         }
     }
 
+    #[Route('/statistics', name: 'app_activite_statistics', methods: ['GET'])]
+    public function statistics(EntityManagerInterface $entityManager): Response
+    {
+        $activites = $entityManager->getRepository(Activite::class)->findAll();
 
+        $enAttenteCount = 0;
+        $termineCount = 0;
+
+        foreach ($activites as $activite) {
+            if ($activite->getEtatact() === 'en attente') {
+                $enAttenteCount++;
+            } elseif ($activite->getEtatact() === 'terminé') {
+                $termineCount++;
+            }
+        }
+
+        $chart = new Highchart();
+
+        $chart->chart->renderTo('chart');
+        $chart->title->text('Statistiques des activités');
+        $chart->plotOptions->pie([
+            'allowPointSelect' => true,
+            'cursor' => 'pointer',
+            'dataLabels' => [
+                'enabled' => true,
+                'format' => '<b>{point.name}</b>: {point.percentage:.1f} %',
+            ],
+        ]);
+
+        $chart->series[] = [
+            'type' => 'pie',
+            'name' => 'Statistiques',
+            'data' => [
+                ['En Attente', $enAttenteCount],
+                ['Terminé', $termineCount],
+            ],
+        ];
+
+        return $this->render('activite/statistics.html.twig', [
+            'chart' => $chart,
+        ]);
+    }
+
+    #[Route('/show-statistics', name: 'app_activite_show_statistics', methods: ['GET'])]
+    public function showStatistics(): Response
+    {
+        return $this->redirectToRoute('app_activite_statistics');
+    }
 }

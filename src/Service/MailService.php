@@ -23,7 +23,7 @@ class MailService
     public function sendActivationEmail(string $recipient, string $subject, string $content): void
     {
         $email = (new Email())
-            ->from('hassan.jlassi@esprit-tn.com') // Adresse expéditeur
+            ->from('houssemmeguebli@outlook.com') // Adresse expéditeur
             ->to($recipient) // Adresse destinataire
             ->subject($subject)
             ->html($content);

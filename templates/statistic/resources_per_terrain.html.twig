@@ -1,8 +1,6 @@
-{# templates/statistic/resources_per_terrain.html.twig #}
-
 {% extends 'base.html.twig' %}
 
-{% block title %}Resources per Terrain{% endblock %}
+{% block title %}Statistiques des Ressources par Terrain{% endblock %}
 
 {% block stylesheets %}
     {# Include Chart.js CSS file if needed #}
@@ -11,47 +9,55 @@
 
 {% block contenu %}
     <div class="container mt-4">
-    <h1>Resources per Terrain</h1>
+        <h1 class="text-center">Statistiques des Ressources par Terrain</h1>
 
-    {# Create a canvas element for the chart #}
-    <canvas id="resourcesChart" width="200" height="100"></canvas>
+        {# Create a canvas element for the chart #}
+        <canvas id="resourcesChart" width="200" height="100"></canvas>
 
-    {# Include Chart.js library #}
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+        {# Include Chart.js library #}
+        <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-    <script>
-        // Access the data from the PHP variable and convert it to JavaScript
-        var chartData = {{ result|json_encode|raw }};
+        <script>
+            // Access the data from the PHP variable and convert it to JavaScript
+            var chartData = {{ result|json_encode|raw }};
 
-        // Extract labels and data for the chart
-        var labels = chartData.map(item => item.terrainName);
-        var data = chartData.map(item => item.resourceCount);
+            // Extract labels and data for the chart
+            var labels = chartData.map(item => item.terrainName);
+            var data = chartData.map(item => item.resourceCount);
 
-        // Create a bar chart
-        var ctx = document.getElementById('resourcesChart').getContext('2d');
-        var myChart = new Chart(ctx, {
-            type: 'bar',
-            data: {
-                labels: labels,
-                datasets: [{
-                    label: 'Resource Count',
-                    data: data,
-                    backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust color as needed
-                    borderColor: 'rgba(75, 192, 192, 1)', // Adjust color as needed
-                    borderWidth: 1
-                }]
-            },
-            options: {
-                scales: {
-                    y: {
-                        beginAtZero: true
+            // Round up the maximum value of the data to the nearest integer
+            var maxDataValue = Math.ceil(Math.max(...data));
+
+            // Create a bar chart
+            var ctx = document.getElementById('resourcesChart').getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: labels,
+                    datasets: [{
+                        label: 'Resource Count',
+                        data: data,
+                        backgroundColor: 'rgba(75, 192, 192, 0.2)', // Adjust color as needed
+                        borderColor: 'rgba(75, 192, 192, 1)', // Adjust color as needed
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    scales: {
+                        y: {
+                            beginAtZero: true,
+                            ticks: {
+                                stepSize: 1 // Set the step size to 1
+                            },
+                            max: maxDataValue // Set the maximum value to the rounded-up maximum data value
+                        }
                     }
                 }
-            }
-        });
-    </script>
+            });
+        </script>
 
-    {# Add a button to go back to the terrain index #}
-    <a href="{{ path('app_terrain_index') }}" class="btn btn-primary mt-3">Retour aux terrains</a>
+
+        {# Add a button to go back to the terrain index #}
+        <a href="{{ path('app_terrain_index') }}" class="btn btn-primary mt-3">Retour aux terrains</a>
     </div>
 {% endblock %}

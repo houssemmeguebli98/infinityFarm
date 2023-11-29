@@ -5,3 +5,11 @@ app_statistic_resources_per_terrain:
   path: '/statistic/resources-per-terrain'
   controller: 'App\Controller\StatisticController::resourcesPerTerrain'
   methods: ['GET']
+
+app_activite_statistics:
+  path: '/statistics'
+  controller: 'App\Controller\ActiviteController::statistics'
+
+app_activite_show_statistics:
+  path: '/show-statistics'
+  controller: 'App\Controller\ActiviteController::showStatistics'
