@@ -53,6 +53,7 @@ class ParcController extends AbstractController
     }
 
 
+
     #[Route('/new', name: 'app_parc_new', methods: ['GET', 'POST'])]
     public function new(Request $request, EntityManagerInterface $entityManager): Response
     {
@@ -61,10 +62,15 @@ class ParcController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            // Convertir la superficie du parc en hectares
+            $superficieEnHectares = $parc->getSuperficieParc() / 10000;
+            $parc->setSuperficieParc($superficieEnHectares);
 
             // Le nom du parc est unique, persistez et flush
             $entityManager->persist($parc);
             $entityManager->flush();
+
+            $this->addFlash('done', 'Parc ajouté avec succès!');
 
             return $this->redirectToRoute('app_parc_index', [], Response::HTTP_SEE_OTHER);
         }
@@ -89,6 +95,8 @@ class ParcController extends AbstractController
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
+            $superficieEnHectares = $parc->getSuperficieParc() / 10000;
+            $parc->setSuperficieParc($superficieEnHectares);
             $entityManager->flush();
 
             return $this->redirectToRoute('app_parc_index', [], Response::HTTP_SEE_OTHER);

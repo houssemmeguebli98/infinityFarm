@@ -22,8 +22,28 @@
 
         <h1 class="m-0 text-center mb-4" style="font-size: 24px;">Liste des Parcs</h1>
         <br>
+        {% for flashMessage in app.flashes('done') %}
+            <div id="flash-message" class="alert alert-success" style="display: none;">
+                {{ flashMessage }}
+            </div>
+            <script>
+                document.addEventListener("DOMContentLoaded", function() {
+                    // Récupération de l'élément du message
+                    var successMessage = document.getElementById('flash-message');
 
-        <br>
+                    // Vérification si le message existe
+                    if (successMessage) {
+                        // Affichage initial du message
+                        successMessage.style.display = 'block';
+
+                        // Disparition du message après 5 secondes
+                        setTimeout(function() {
+                            successMessage.style.display = 'none';
+                        }, 5000);
+                    }
+                });
+            </script>
+        {% endfor %}
         {# Formulaire de recherche #}
         <form method="get" action="{{ path('app_parc_index') }}" class="mb-4">
             <div class="d-flex">
@@ -51,6 +71,7 @@
         </form>
 
         <div class="table-responsive">
+
             <!-- Tableau pour afficher les informations du parc -->
             <table class="table table-striped">
                 <thead>
@@ -66,7 +87,7 @@
                     <tr>
                         <td>{{ parc.nomparc }}</td>
                         <td>{{ parc.adresseparc }}</td>
-                        <td>{{ parc.superficieparc }}</td>
+                        <td>{{ parc.superficieparc }} Hectares</td>
                         <td>
                             <a href="{{ path('materiels_par_parc', {'nomparc': parc.nomparc}) }}" class="btn btn-primary" title="Afficher le matériel associé">
                                 <i class="fas fa-eye"></i>
