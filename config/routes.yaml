@@ -13,3 +13,12 @@ app_activite_statistics:
 app_activite_show_statistics:
   path: '/show-statistics'
   controller: 'App\Controller\ActiviteController::showStatistics'
+
+# config/routes.yaml
+
+app_terrain_qr_code:
+  path: '/{idterrain}/qr-code'
+  controller: 'App\Controller\TerrainController::generateQrCode'
+  methods: ['GET']
+  format: json
+

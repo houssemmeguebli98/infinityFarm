@@ -14,6 +14,7 @@
         "doctrine/doctrine-migrations-bundle": "^3.2",
         "doctrine/orm": "^2.16",
         "easycorp/easyadmin-bundle": "^4.8",
+        "endroid/qrcode": "^5.0",
         "knplabs/knp-paginator-bundle": "^5.9",
         "knplabs/knp-snappy-bundle": "^1.9",
         "ob/highcharts-bundle": "^1.7",

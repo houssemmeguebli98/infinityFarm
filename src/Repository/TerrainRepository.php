@@ -18,8 +18,11 @@ class TerrainRepository extends ServiceEntityRepository
         $queryBuilder = $this->createQueryBuilder('t');
 
         if (!empty($criteria['nomterrain'])) {
-            $queryBuilder->where('t.nomterrain LIKE :nomterrain')
+            $queryBuilder->andWhere('t.nomterrain LIKE :nomterrain')
                 ->setParameter('nomterrain', '%' . $criteria['nomterrain'] . '%');
+        } else {
+            // Ajouter ce bloc si le champ est vide
+            $queryBuilder->andWhere('1=1');
         }
 
         if (!empty($criteria['localisation'])) {

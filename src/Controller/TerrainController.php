@@ -28,19 +28,34 @@ class TerrainController extends AbstractController
             'localisation' => $localisation,
             'superficie' => $superficie,
         ];
+        $terrains = $terrainRepository->searchByCriteria($criteria);
+
+
+        // Ajoutez la logique de tri
+        $sortField = $request->query->get('sort', 'nomterrain');
+        $sortOrder = $request->query->get('order', 'asc');
+
+        // Validez les paramètres de tri pour éviter les injections SQL
+        $allowedFields = ['nomterrain', 'localisation', 'superficie'];
+        if (!in_array($sortField, $allowedFields) || !in_array(strtolower($sortOrder), ['asc', 'desc'])) {
+            throw new \InvalidArgumentException('Invalid sorting parameters.');
+        }
 
         if (!empty($nomterrain) || !empty($localisation) || !empty($superficie)) {
             // Si au moins un paramètre de recherche est fourni, utilisez la méthode searchByCriteria.
-            $terrains = $terrainRepository->searchByCriteria($criteria);
+            $terrains = $terrainRepository->searchByCriteria($criteria, $sortField, $sortOrder);
         } else {
-            // Si aucun paramètre de recherche n'est fourni, récupérez tous les terrains.
-            $terrains = $terrainRepository->findAll();
+            // Si aucun paramètre de recherche n'est fourni, récupérez tous les terrains avec tri.
+            $terrains = $terrainRepository->findBy([], [$sortField => $sortOrder]);
         }
 
         return $this->render('terrain/index.html.twig', [
             'terrains' => $terrains,
+            'sortField' => $sortField,
+            'sortOrder' => $sortOrder,
         ]);
     }
+
 
 
     #[Route('/new', name: 'app_terrain_new', methods: ['GET', 'POST'])]
@@ -158,4 +173,6 @@ class TerrainController extends AbstractController
             'form' => $form,
         ]);
     }
+
+
 }
