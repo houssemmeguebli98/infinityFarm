@@ -2,6 +2,7 @@
 
 namespace App\Controller;
 
+use App\Service\PdfGenerator2;
 use App\Entity\User;
 use App\Form\RegistrationFormType;
 use App\Form\UserType;
@@ -74,20 +75,7 @@ class Admin1Controller extends AbstractController
             'users' => $users,
         ]);
     }
-    /**
-     * @Route("/admin/toggle-status/{id}", name="toggle_user_status")
-     */
-    public function toggleUserStatus(User $user): Response
-    {
-        // Inversez le statut de l'utilisateur
-        $user->setStatus(!$user->getStatus());
 
-        // Enregistrez les modifications dans la base de données
-        $this->getDoctrine()->getManager()->flush();
-
-        // Redirigez l'utilisateur vers une autre page
-        return $this->redirectToRoute('liste_des_utilisateurs');
-    }
 
     public function countByVille(string $city): int
     {
@@ -124,6 +112,7 @@ class Admin1Controller extends AbstractController
 
         return $query->getResult(\Doctrine\ORM\Query::HYDRATE_ARRAY);
     }
+
 
     #[Route('/admin1/pdf', name: 'app_admin1_pdf', methods: ['GET', 'POST'])]
     public function generatePdf(Request $request, UserRepository $userRepository, PdfGenerator $pdfGenerator): Response

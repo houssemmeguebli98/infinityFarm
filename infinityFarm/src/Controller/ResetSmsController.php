@@ -77,82 +77,19 @@ class ResetSmsController extends AbstractController
         );
 
         if (strcasecmp($codeFromUser, $codeFromDatabase) === 0) {
-            return $this->redirectToRoute('reset_password_phone', ['phone' => $phone]);
+            // Requête SQL pour récupérer l'email associé au numéro de téléphone
+            $email = $this->entityManager->getConnection()->fetchOne(
+                "SELECT mail FROM user WHERE numeroTelephone = ?",
+                [$phone]
+            );
+
+            return $this->redirectToRoute('reset_password', ['email' => $email]);
         } else {
             return $this->render('send_sms/failure.html.twig');
         }
     }
 
-    #[Route('/reset-password/{phone}', name: 'reset_password_phone')]
-    public function resetPasswordPhone(Request $request, string $phone): Response
-    {
-        if (empty($phone)) {
-            // Gérer le cas où le numéro de téléphone est manquant
-            // Vous pouvez rediriger l'utilisateur vers une autre page ou afficher un message d'erreur
-            // par exemple : return $this->redirectToRoute('some_other_route');
-        }
 
-        return $this->render('send_sms/reset_password_phone.html.twig', [
-            'phone' => $phone,
-        ]);
-    }
 
-    #[Route('/process-reset-password-phone', name: 'process_reset_password_phone', methods: ['POST'])]
-    public function processResetPasswordPhone(
-        Request $request,
-        ValidatorInterface $validator,
-        UserPasswordEncoderInterface $passwordEncoder,
-        EntityManagerInterface $entityManager // Ajoutez cette ligne
-    ): Response {
-        $phone = $request->request->get('phone');
-        $newPassword = $request->request->get('new_password');
-
-        $errors = [];
-
-        // Valider le mot de passe
-        $constraints = new Assert\Collection([
-            'new_password' => [
-                new Assert\NotBlank(['message' => 'Le mot de passe ne peut pas être vide.']),
-                new Assert\Length(['min' => 8, 'minMessage' => 'Le mot de passe doit contenir au moins {{ limit }} caractères.']),
-                new Assert\Regex([
-                    'pattern' => '/^(?=.*[A-Z])(?=.*\d).+$/',
-                    'message' => 'Le mot de passe doit contenir au moins une lettre majuscule et un chiffre.',
-                ]),
-            ],
-        ]);
-
-        $data = ['new_password' => $newPassword];
-        $violations = $validator->validate($data, $constraints);
-
-        foreach ($violations as $violation) {
-            $propertyPath = $violation->getPropertyPath();
-            $message = $violation->getMessage();
-
-            // Utiliser le nom du champ comme clé dans le tableau d'erreurs
-            $errors[$propertyPath] = $message;
-        }
-
-        // Si des erreurs sont présentes, afficher les messages d'erreur sur la même page
-        if (!empty($errors)) {
-            return $this->render('send_sms/reset_password_phone.html.twig', [
-                'errors' => $errors,
-                'phone' => $phone,
-            ]);
-        }
-
-        // Construire la requête SQL pour mettre à jour le mot de passe
-        $sql = "UPDATE user SET password = :encodedPassword WHERE numeroTelephone = :phone";
-        $params = [
-            'encodedPassword' => $passwordEncoder->encodePassword(new User(), $newPassword),
-            'phone' => $phone,
-        ];
-
-        // Exécuter la requête SQL
-        $statement = $entityManager->getConnection()->prepare($sql);
-        $statement->execute($params);
-
-        // Rediriger l'utilisateur vers une page de confirmation ou de connexion
-        return $this->redirectToRoute('app_login');
-    }
 
 }

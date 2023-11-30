@@ -2,6 +2,8 @@
 
 namespace App\Controller;
 
+use App\Service\MailService;
+
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use App\Entity\User;
 use Doctrine\ORM\EntityManagerInterface;
@@ -18,12 +20,16 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
 
 
+
 class ForgetPasswordController extends AbstractController
 {
     private $entityManager;
+    private $mailService;
 
-    public function __construct(EntityManagerInterface $entityManager)
+
+    public function __construct(EntityManagerInterface $entityManager, MailService $mailService)
     {
+        $this->mailService = $mailService;
         $this->entityManager = $entityManager;
     }
 
@@ -36,7 +42,7 @@ class ForgetPasswordController extends AbstractController
     }
 
     #[Route('/send-email', name: 'send_email')]
-    public function sendEmail(Request $request, MailerInterface $mailer): Response
+    public function sendEmail(Request $request): Response
     {
         // Récupérer l'e-mail à partir de la requête
         $emailAddress = $request->request->get('email');
@@ -57,18 +63,10 @@ class ForgetPasswordController extends AbstractController
         $this->entityManager->getConnection()->executeStatement($sql, [$emailAddress, $verificationCode]);
 
         // Votre logique d'envoi d'e-mail ici
-        $email = (new Email())
-            ->from('infinityfarm11@outlook.com')
-            ->to($emailAddress)
-            ->subject('Code de Vérification')
-            ->text('Votre code de vérification est : ' . $verificationCode);
+        // Utiliser le service MailService pour envoyer l'e-mail
+        $this->mailService->sendEmailVerification($emailAddress, $verificationCode);
 
-        try {
-            $mailer->send($email);
-            $this->addFlash('success', 'Code de vérification envoyé avec succès à votre adresse e-mail!');
-        } catch (TransportExceptionInterface $e) {
-            $this->addFlash('error', 'Erreur lors de l\'envoi de l\'e-mail : ' . $e->getMessage());
-        }
+        $this->addFlash('success', 'Code de vérification envoyé avec succès à votre adresse e-mail!');
         
 
         return $this->redirectToRoute('verify_code', ['email' => $emailAddress]);

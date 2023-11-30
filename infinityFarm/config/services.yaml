@@ -10,6 +10,10 @@ parameters:
 
 
 services:
+    App\Service\MailService:
+        arguments:
+            $mailer: '@Symfony\Component\Mailer\MailerInterface'
+
 
     App\Controller\BannedUserManager:
         class: App\Controller\BannedUserManager
