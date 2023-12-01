@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use App\Service\MailService;
 use Knp\Snappy\Pdf;
-use Ob\HighchartsBundle\Highcharts\Highchart;
+use Ob\HighchartsBundle\Highcharts\Highchart; 
 
 #[Route('/activite')]
 class ActiviteController extends AbstractController
