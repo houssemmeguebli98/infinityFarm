@@ -1,0 +1,2 @@
+parameters:
+    bad_words_list: ['donkey', 'monkey', 'stupid']
