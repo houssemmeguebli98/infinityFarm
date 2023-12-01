@@ -78,7 +78,7 @@
                         <td>{{ materiel.nommat }}</td>
                         <td>{{ materiel.nomparc }}</td>
 
-                        <td>{{ materiel.etatmat }}</td>
+                        <td style="background-color: {% if materiel.etatmat =='On marche' %}palegreen {% elseif materiel.etatmat =='On panne' %} lightcoral {% endif %}">{{ materiel.etatmat }}</td>
                         <td>{{ materiel.quantitemat }}</td>
                         <td>{{ materiel.dateajout ? materiel.dateajout|date('Y-m-d') : '' }}</td>
                         <td>

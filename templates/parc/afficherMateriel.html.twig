@@ -67,7 +67,7 @@
                 {% for item in materiels %}
                     <tr>
                         <td>{{ item.nommat }}</td>
-                        <td>{{ item.etatmat }}</td>
+                        <td style="background-color: {% if item.etatmat =='On marche' %}palegreen {% elseif item.etatmat =='On panne' %} lightcoral {% endif %}">{{ item.etatmat }}</td>
                         <td>{{ item.quantitemat }}</td>
                         <td>{{ item.dateajout ? item.dateajout|date('Y-m-d') : '' }}</td>
                         <td>

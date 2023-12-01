@@ -26,11 +26,16 @@ class ParcController extends AbstractController
         $nomparc = $request->query->get('nomparc');
         $adresseparc = $request->query->get('adresseparc');
         $superficieparc = $request->query->get('superficieparc');
+        $sortBy = $request->query->get('sortBy');
+        $sortBySuperficie = $request->query->get('sortBySuperficie'); // Nouveau paramètre
+
+
 
         $criteria = [
             'nomparc' => $nomparc,
             'adresseparc' => $adresseparc,
             'superficieparc' => $superficieparc,
+
         ];
 
         if (!empty($nomparc) || !empty($adresseparc) || !empty($superficieparc)) {
@@ -38,7 +43,13 @@ class ParcController extends AbstractController
             $parcs = $parcRepository->searchByCriteria($criteria);
         } else {
             // If no search parameter is provided, retrieve all parcs.
-            $parcs = $parcRepository->findAll();
+            if ($sortBy === 'asc') {
+                $parcs = $parcRepository->findAllSortedByNameAsc();
+            } elseif ($sortBySuperficie === 'desc') {
+                $parcs = $parcRepository->findAllSortedBySuperficieDesc();
+            } else {
+                $parcs = $parcRepository->findAll();
+            }
         }
 
         $pagination = $paginator->paginate(

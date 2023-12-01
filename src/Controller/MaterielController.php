@@ -44,7 +44,7 @@ class MaterielController extends AbstractController
             $materiels = $materielRepository->searchMatByCriteria($criteria);
         } else {
             // Si aucun paramètre de recherche n'est fourni, récupérez tous les matériels.
-            $materiels = $materielRepository->findAll();
+            $materiels = $materielRepository->findBy([], ['nommat' => 'ASC']);
         }
 
         // Récupérer les événements du calendrier directement dans l'action index
@@ -166,7 +166,8 @@ class MaterielController extends AbstractController
             $materiels = $materielRepository->searchMatByCriteria($criteria);
         } else {
             // Si aucun paramètre de recherche n'est fourni, récupérez tous les matériels.
-            $materiels = $materielRepository->findAll();
+            $materiels = $materielRepository->findBy([], ['nommat' => 'ASC']);
+
         }
 
         // Utiliser la variable $pagination pour stocker les résultats paginés

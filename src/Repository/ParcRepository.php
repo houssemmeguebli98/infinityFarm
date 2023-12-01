@@ -34,6 +34,21 @@ class ParcRepository extends ServiceEntityRepository
             return $parc->getIdParc();
 
     }
+    public function findAllSortedByNameAsc()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.nomparc', 'ASC')
+            ->getQuery()
+            ->getResult();
+    }
+
+    public function findAllSortedBySuperficieDesc()
+    {
+        return $this->createQueryBuilder('p')
+            ->orderBy('p.superficieparc', 'DESC')
+            ->getQuery()
+            ->getResult();
+    }
 
 
     /**

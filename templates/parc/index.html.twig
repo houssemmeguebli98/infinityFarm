@@ -76,9 +76,10 @@
             <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th class="bg-dark text-white">Nom de parc</th>
+                    <th class="bg-dark text-white"> <a href="{{ path('app_parc_index', {'sortBy': 'asc'}) }}" >Nom de parc</a></th>
                     <th class="bg-dark text-white">Adresse de parc</th>
-                    <th class="bg-dark text-white">Superficie de parc</th>
+                    <th class="bg-dark text-white"><a href="{{ path('app_parc_index', {'sortBySuperficie': 'desc'}) }}" >Superficie de parc</a>
+                    </th>
                     <th class="bg-dark text-white">Actions</th>
                 </tr>
                 </thead>
