@@ -16,7 +16,6 @@
         "nelmio/cors-bundle": "^2.3",
         "nyholm/psr7": "^1.8",
         "openai-php/client": "^0.7.10",
-        "openai/openai": "1.1",
         "phpdocumentor/reflection-docblock": "^5.3",
         "phpstan/phpdoc-parser": "^1.24",
         "sensio/framework-extra-bundle": "^6.2",

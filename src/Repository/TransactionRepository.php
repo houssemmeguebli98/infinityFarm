@@ -15,32 +15,33 @@ class TransactionRepository extends ServiceEntityRepository
         parent::__construct($registry, Transaction::class);
     }
 
-    public function findBySearchCriteria($category, $type, $startDate, $endDate)
+    public function findBySearchCriteria(array $criteria): array
     {
         $queryBuilder = $this->createQueryBuilder('t');
-
-        if ($category) {
-            $queryBuilder->andWhere('t.categTra = :category')
-                ->setParameter('category', $category);
+    
+        if (!empty($criteria['category'])) {
+            $queryBuilder->andWhere('t.categTra LIKE :category')
+                ->setParameter('category', '%' . $criteria['category'] . '%');
         }
-
-        if ($type) {
-            $queryBuilder->andWhere('t.typeTra = :type')
-                ->setParameter('type', $type);
+    
+        if (!empty($criteria['type'])) {
+            $queryBuilder->andWhere('t.typeTra LIKE :type')
+                ->setParameter('type', '%' . $criteria['type'] . '%');
         }
-
-        if ($startDate) {
+    
+        if (!empty($criteria['startDate'])) {
             $queryBuilder->andWhere('t.dateTra >= :startDate')
-                ->setParameter('startDate', $startDate);
+                ->setParameter('startDate', $criteria['startDate']);
         }
-
-        if ($endDate) {
+    
+        if (!empty($criteria['endDate'])) {
             $queryBuilder->andWhere('t.dateTra <= :endDate')
-                ->setParameter('endDate', $endDate);
+                ->setParameter('endDate', $criteria['endDate']);
         }
-
         return $queryBuilder->getQuery()->getResult();
+
     }
+    
     // Dans votre TransactionRepository
 
 public function calculateSumByType($type)

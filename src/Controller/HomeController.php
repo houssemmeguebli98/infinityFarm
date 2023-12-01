@@ -35,7 +35,7 @@ class HomeController extends AbstractController
         }
 
         // Ajouter des mots-clés spécifiques à l'agriculture
-        $prompt = "Agriculture: " . $question;
+        $prompt="" . $question;
     
         // Implémentation du chat GPT
         $myApiKey = $_ENV['OPENAI_KEY'];
@@ -60,7 +60,7 @@ class HomeController extends AbstractController
 {
     // Add your logic to determine if the question is related to agriculture
     // For example, you can check for specific keywords or patterns in the question
-    $keywords = ['agriculture', 'ferme', 'cultiver', 'plante', 'moutant', 'vache', 'arbre', 'terre', 'poule', 'bonjour', 'pluit', 'hello'];
+    $keywords = ['agriculture', 'ferme', 'cultiver', 'plante', 'moutant', 'vache', 'arbre', 'terre', 'poule', 'bonjour', 'pluit', 'hello', 'صباح الخير'];
     
     foreach ($keywords as $keyword) {
         if (stripos($question, $keyword) !== false) {
