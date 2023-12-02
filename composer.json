@@ -1,9 +1,7 @@
 {
-    "name": "symfony/skeleton",
     "type": "project",
     "license": "proprietary",
-    "description": "A minimal Symfony project recommended to create bare bones applications",
-    "minimum-stability": "stable",
+    "minimum-stability": "dev",
     "prefer-stable": true,
     "require": {
         "php": ">=8.0",
@@ -18,7 +16,9 @@
         "setasign/fpdi": "^2.5",
         "symfony/asset": "5.4.*",
         "symfony/console": "5.4.*",
+        "symfony/doctrine-messenger": "5.4.*",
         "symfony/dotenv": "5.4.*",
+        "symfony/expression-language": "5.4.*",
         "symfony/flex": "^1.17|^2",
         "symfony/form": "5.4.*",
         "symfony/framework-bundle": "5.4.*",
@@ -30,11 +30,13 @@
         "symfony/swiftmailer-bundle": "^3.5",
         "symfony/twig-bundle": "5.4.*",
         "symfony/validator": "5.4.*",
+        "symfony/web-link": "5.4.*",
         "symfony/yaml": "5.4.*",
         "tecnickcom/tcpdf": "^6.6",
         "twbs/bootstrap": "5.1.*",
         "twig/extra-bundle": "^2.12|^3.0",
-        "twig/twig": "^2.12|^3.0"
+        "twig/twig": "^2.12|^3.0",
+        "twilio/sdk": "^7.12"
     },
     "config": {
         "allow-plugins": {
@@ -86,6 +88,13 @@
         }
     },
     "require-dev": {
-        "symfony/maker-bundle": "^1.50"
+        "phpunit/phpunit": "^9.5",
+        "symfony/browser-kit": "5.4.*",
+        "symfony/css-selector": "5.4.*",
+        "symfony/debug-bundle": "5.4.*",
+        "symfony/maker-bundle": "^1.0",
+        "symfony/phpunit-bridge": "^6.3",
+        "symfony/stopwatch": "5.4.*",
+        "symfony/web-profiler-bundle": "5.4.*"
     }
 }
