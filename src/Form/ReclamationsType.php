@@ -12,7 +12,7 @@ use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use App\Repository\ParcRepository;
 
-class MaterielType extends AbstractType
+class ReclamationsType extends AbstractType
 {
     private $parcRepository;
 
@@ -39,7 +39,7 @@ class MaterielType extends AbstractType
     public function configureOptions(OptionsResolver $resolver): void
     {
         $resolver->setDefaults([
-            'data_class' => Materiel::class,
+            'data_class' => Reclamations::class,
         ]);
     }
 }
